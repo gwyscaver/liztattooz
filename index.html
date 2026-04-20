@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIZTATTOOZ — American Traditional Tattoo</title>
+  <meta name="description" content="Liztattooz — American Traditional tattoo. Bold lines, rich color, timeless craft. Browse flash and book your session.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700;1,6..96,900&family=Outfit:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* Olive greens — primary accent */
+      --olive: #6B7F56;
+      --olive-bright: #8FA874;
+      --olive-dark: #4A5B3A;
+      --olive-glow: rgba(107, 127, 86, 0.35);
+      /* Smoky green base */
+      --black: #0D1612;
+      --dark: #121D17;
+      --dark-card: #16221B;
+      --dark-border: #243029;
+      /* Caramel / warm accents */
+      --cream: #EDDDC8;
+      --warm-gray: #B09E8A;
+      --light-gray: #C8B9A7;
+      --white: #F0E6D6;
+      --caramel: #C8A87A;
+      --caramel-bright: #DABE92;
+      --gold: #D4A953;
+    }
+
+    html {
+      scroll-behavior: auto; /* we handle smooth scroll in JS */
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--black);
+      color: var(--cream);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* ── Custom Cursor ── */
+    .cursor {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--olive-bright);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 99999;
+      transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s, margin 0.3s;
+      margin-left: -8px;
+      margin-top: -8px;
+      mix-blend-mode: difference;
+    }
+
+    .cursor.hover {
+      width: 50px;
+      height: 50px;
+      margin-left: -25px;
+      margin-top: -25px;
+      background: var(--olive-glow);
+      border-color: var(--olive-bright);
+    }
+
+    .cursor-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--olive-bright);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 100000;
+      margin-left: -2px;
+      margin-top: -2px;
+    }
+
+    /* ── Skip Link ── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      background: var(--olive);
+      color: var(--black);
+      padding: 12px 24px;
+      z-index: 100001;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .skip-link:focus { top: 16px; }
+
+    *:focus-visible {
+      outline: 2px solid var(--olive-bright);
+      outline-offset: 3px;
+    }
+
+    a { text-decoration: none; color: inherit; cursor: none; }
+    button { cursor: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ── Loader ── */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .loader.done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-logo {
+      width: 52px;
+      height: 70px;
+      opacity: 0;
+      animation: loaderFadeIn 0.6s ease 0.2s forwards;
+    }
+
+    .loader-bar {
+      width: 120px;
+      height: 1px;
+      background: var(--dark-border);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: loaderFadeIn 0.6s ease 0.4s forwards;
+    }
+
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--caramel);
+      animation: loaderProgress 1.8s ease 0.5s forwards;
+    }
+
+    @keyframes loaderFadeIn { to { opacity: 1; } }
+    @keyframes loaderProgress { to { width: 100%; } }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: difference;
+      transition: padding 0.4s ease, background 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 16px 48px;
+      background: rgba(13, 22, 18, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      mix-blend-mode: normal;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo svg { width: 28px; height: 38px; }
+
+    .nav-logo span {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--white);
+      position: relative;
+      padding: 4px 0;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--olive-bright);
+      transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after { width: 100%; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 10px;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+    }
+    .hamburger span {
+      width: 28px;
+      height: 1px;
+      background: var(--white);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s ease;
+    }
+    .mobile-menu.active { opacity: 1; visibility: visible; }
+    .mobile-menu a {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--cream);
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--olive-bright); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      filter: brightness(0.7) saturate(0.85);
+      transform: scale(1.1);
+      transition: transform 8s ease;
+    }
+
+    .hero.in-view .hero-bg img {
+      transform: scale(1.0);
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(13,22,18,0.45) 0%,
+        rgba(13,22,18,0.6) 55%,
+        rgba(13,22,18,0.88) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 48px;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--caramel);
+      font-weight: 400;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--caramel);
+      opacity: 0.5;
+    }
+
+    /* Massive center-stage title */
+    .hero-title {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 900;
+      line-height: 0.88;
+      color: var(--white);
+      margin-bottom: 0;
+      overflow: hidden;
+    }
+
+    .hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-title .line span {
+      display: block;
+      transform: translateY(115%);
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero.in-view .hero-title .line span {
+      transform: translateY(0);
+    }
+
+    .hero.in-view .hero-title .line:nth-child(2) span {
+      transition-delay: 0.15s;
+    }
+
+    .hero.in-view .hero-title .line:nth-child(3) span {
+      transition-delay: 0.3s;
+    }
+
+    /* Brand name — enormous display word */
+    .hero-word-huge {
+      font-size: clamp(3.2rem, 11vw, 11rem);
+      letter-spacing: 0.06em;
+      color: var(--white);
+    }
+
+    /* Tagline under brand name */
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--caramel);
+      letter-spacing: 0.12em;
+      margin-top: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .hero-tagline em {
+      color: var(--olive-bright);
+      font-weight: 400;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 1.6vw, 1.35rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--warm-gray);
+      margin-top: 36px;
+      margin-bottom: 48px;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    /* Magnetic CTA button */
+    .magnetic-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: transparent;
+      color: var(--cream);
+      padding: 22px 48px;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: 1px solid var(--olive);
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .magnetic-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--olive);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: -1;
+    }
+
+    .magnetic-btn:hover::before,
+    .magnetic-btn:focus-visible::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .magnetic-btn:hover { border-color: var(--olive-bright); }
+
+    .magnetic-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.4s ease;
+    }
+
+    .magnetic-btn:hover svg { transform: translateX(4px); }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .hero-scroll-indicator span {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: var(--dark-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--olive-bright);
+      animation: scrollPulse 2s ease infinite;
+    }
+
+    @keyframes scrollPulse {
+      0% { top: -100%; }
+      50% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    /* ── Reveal animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* Image clip reveal */
+    .img-reveal {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .img-reveal::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--black);
+      transform-origin: right;
+      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .img-reveal.visible::after {
+      transform: scaleX(0);
+    }
+
+    .img-reveal img {
+      transform: scale(1.3);
+      transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+    }
+
+    .img-reveal.visible img {
+      transform: scale(1);
+    }
+
+    /* ── Section Label ── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--olive-bright);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--olive);
+    }
+
+    /* ── About ── */
+    .about {
+      padding: 160px 0;
+      position: relative;
+    }
+
+    .about .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+
+    .about-image-wrap img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      filter: saturate(0.8);
+      transition: filter 0.6s ease;
+    }
+
+    .about-image-wrap:hover img { filter: saturate(1); }
+
+    .about-image-frame {
+      position: absolute;
+      top: -24px;
+      left: -24px;
+      right: 24px;
+      bottom: 24px;
+      border: 1px solid var(--olive);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .about-heading {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 36px;
+      color: var(--white);
+    }
+
+    .about-heading em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--olive-bright);
+    }
+
+    .about-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--warm-gray);
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .about-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--olive);
+      margin: 40px 0;
+    }
+
+    .about-pull-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.5;
+      font-weight: 300;
+      border-left: 2px solid var(--caramel);
+      padding-left: 24px;
+    }
+
+    /* ── Horizontal Flash Gallery ── */
+    .flash {
+      padding: 120px 0 0;
+      overflow: hidden;
+    }
+
+    .flash-header {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 48px 64px;
+    }
+
+    .flash-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .flash-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--olive-bright);
+    }
+
+    .flash-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--caramel);
+    }
+
+    .flash-track-wrapper {
+      position: relative;
+      padding-bottom: 120px;
+    }
+
+    .flash-track {
+      display: flex;
+      gap: 24px;
+      padding: 0 48px;
+      transition: transform 0.05s linear;
+      will-change: transform;
+    }
+
+    .flash-card {
+      flex: 0 0 360px;
+      position: relative;
+      overflow: hidden;
+      background: var(--dark-card);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .flash-card.card-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .flash-card a {
+      display: block;
+      width: 100%;
+    }
+
+    .flash-card-image {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .flash-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%) brightness(0.8) sepia(10%);
+      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .flash-card:hover .flash-card-image img {
+      filter: grayscale(0%) brightness(1);
+      transform: scale(1.06);
+    }
+
+    .flash-card-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 50%, rgba(13,22,18,0.85));
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .flash-card:hover .flash-card-image::after { opacity: 1; }
+
+    .flash-card-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px 24px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .flash-card:hover .flash-card-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .flash-card-info h4 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .flash-card-info p {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--olive-bright);
+    }
+
+    .flash-card-number {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      font-family: 'Bodoni Moda', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: rgba(200, 168, 122, 0.4);
+      z-index: 2;
+    }
+
+    .flash-drag-hint {
+      text-align: center;
+      padding-top: 40px;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      opacity: 0.5;
+    }
+
+    /* ── Running Marquee ── */
+    .marquee-strip {
+      padding: 32px 0;
+      overflow: hidden;
+      border-top: 1px solid var(--dark-border);
+      border-bottom: 1px solid var(--dark-border);
+      position: relative;
+    }
+
+    .marquee-inner {
+      display: flex;
+      gap: 0;
+      animation: marqueeScroll 40s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-inner:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      padding: 0 48px;
+      white-space: nowrap;
+    }
+
+    .marquee-item span {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1rem, 2vw, 1.6rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--warm-gray);
+      letter-spacing: 0.08em;
+      transition: color 0.4s ease;
+    }
+
+    .marquee-item span:hover {
+      color: var(--caramel);
+    }
+
+    .marquee-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--olive);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @keyframes marqueeScrollReverse {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    .marquee-strip.reverse .marquee-inner {
+      animation-name: marqueeScrollReverse;
+    }
+
+    /* ── Large Editorial Quote ── */
+    .editorial-break {
+      padding: 140px 48px;
+      text-align: center;
+      position: relative;
+    }
+
+    .editorial-break::before,
+    .editorial-break::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(var(--dark-border), var(--caramel), var(--dark-border));
+    }
+
+    .editorial-break::before { top: 0; }
+    .editorial-break::after { bottom: 0; }
+
+    .editorial-break blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--cream);
+      max-width: 850px;
+      margin: 0 auto;
+      line-height: 1.35;
+    }
+
+    .editorial-break blockquote strong {
+      color: var(--caramel-bright);
+      font-weight: 400;
+    }
+
+    .editorial-break cite {
+      display: block;
+      margin-top: 32px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      font-style: normal;
+      color: var(--caramel);
+    }
+
+    /* ── Instagram ── */
+    .instagram {
+      padding: 120px 0;
+    }
+
+    .instagram .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .insta-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .insta-heading {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .insta-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--caramel);
+      margin-top: 8px;
+    }
+
+    .insta-follow-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border: 1px solid var(--olive);
+      color: var(--cream);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .insta-follow-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--olive);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: -1;
+    }
+
+    .insta-follow-link:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .insta-follow-link svg { width: 14px; height: 14px; }
+
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+    }
+
+    .insta-grid-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .insta-grid-item a { display: block; width: 100%; height: 100%; }
+
+    .insta-grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%) brightness(0.65) sepia(15%);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .insta-grid-item:hover img {
+      filter: grayscale(0%) brightness(1);
+      transform: scale(1.08);
+    }
+
+    /* ── Contact ── */
+    .contact {
+      padding: 160px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dark leather/caramel background */
+    .contact-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(160, 120, 70, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(140, 100, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(100, 75, 45, 0.12) 0%, transparent 55%),
+        linear-gradient(165deg, #1A150F 0%, #1F1810 25%, #231B12 50%, #1E1710 75%, #1A140E 100%);
+    }
+
+    /* Subtle leather grain texture via noise */
+    .contact-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.5;
+    }
+
+    .contact-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,22,18,0.4) 0%,
+        transparent 15%,
+        transparent 85%,
+        rgba(13,22,18,0.4) 100%
+      );
+    }
+
+    .contact::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(transparent, var(--caramel));
+      z-index: 1;
+    }
+
+    .contact .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+    }
+
+    .contact-heading {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.5rem, 4.5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+
+    .contact-heading em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--caramel-bright);
+    }
+
+    .contact-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--warm-gray);
+      font-weight: 300;
+      margin-bottom: 48px;
+    }
+
+    .contact-details { display: flex; flex-direction: column; gap: 28px; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--dark-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.3s;
+    }
+
+    .contact-item:hover .contact-icon { border-color: var(--olive); }
+
+    .contact-icon svg { width: 18px; height: 18px; color: var(--olive-bright); }
+
+    .contact-item-label {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 4px;
+    }
+
+    .contact-item-value {
+      font-size: 1rem;
+      color: var(--cream);
+    }
+
+    .contact-item-value a {
+      color: var(--cream);
+      border-bottom: 1px solid var(--dark-border);
+      transition: border-color 0.3s;
+    }
+
+    .contact-item-value a:hover { border-color: var(--olive-bright); }
+
+    /* Contact form */
+    .contact-form {
+      background: rgba(18, 22, 16, 0.9);
+      padding: 52px;
+      border: 1px solid var(--dark-border);
+      position: relative;
+    }
+
+    .contact-form::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--olive-dark), var(--caramel), var(--olive-dark));
+    }
+
+    .contact-form h3 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .contact-form > p {
+      font-size: 1rem;
+      color: var(--warm-gray);
+      margin-bottom: 36px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    .form-group { margin-bottom: 24px; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--light-gray);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .form-group label .req { color: var(--caramel); margin-left: 2px; }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 16px 18px;
+      border: 1px solid var(--dark-border);
+      background: var(--dark);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.3s ease;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(232, 228, 223, 0.25);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--olive);
+      box-shadow: 0 0 0 1px var(--olive-glow);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-group select { color: var(--warm-gray); }
+    .form-group select option { background: var(--dark); color: var(--cream); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .form-submit {
+      width: 100%;
+      padding: 20px;
+      background: var(--olive);
+      color: var(--black);
+      border: none;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      cursor: none;
+      transition: all 0.4s ease;
+      margin-top: 8px;
+    }
+
+    .form-submit:hover,
+    .form-submit:focus-visible {
+      background: var(--olive-bright);
+      letter-spacing: 6px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--dark-border);
+      padding: 60px 0 48px;
+    }
+
+    footer .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--dark-border);
+    }
+
+    .footer-brand svg { width: 36px; height: 48px; margin-bottom: 16px; }
+
+    .footer-brand-name {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--cream);
+    }
+
+    .footer-brand-sub {
+      font-size: 0.85rem;
+      color: var(--caramel);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    .footer-links { display: flex; gap: 64px; }
+
+    .footer-col h4 {
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .footer-col a {
+      font-size: 0.85rem;
+      color: var(--warm-gray);
+      transition: color 0.3s ease;
+    }
+    .footer-col a:hover { color: var(--cream); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 36px;
+    }
+
+    .footer-bottom p {
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      color: var(--warm-gray);
+    }
+
+    .footer-socials { display: flex; gap: 12px; }
+    .footer-socials a {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--dark-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .footer-socials a:hover {
+      border-color: var(--olive);
+    }
+    .footer-socials svg { width: 15px; height: 15px; color: var(--warm-gray); transition: color 0.3s; }
+    .footer-socials a:hover svg { color: var(--olive-bright); }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      position: fixed;
+      bottom: 36px;
+      right: 36px;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--olive);
+      background: rgba(13, 22, 18, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--olive);
+      border-color: var(--olive-bright);
+    }
+
+    .back-to-top svg {
+      width: 16px;
+      height: 16px;
+      color: var(--cream);
+      transition: transform 0.3s ease;
+    }
+
+    .back-to-top:hover svg { transform: translateY(-2px); }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero-title .line span { transform: none; transition: none; }
+      .flash-card { opacity: 1; transform: none; transition: none; }
+      .cursor, .cursor-dot { display: none; }
+      body { cursor: auto; }
+      a, button { cursor: auto; }
+      .marquee-inner { animation: none; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero-content { padding: 0 48px; }
+      .about-grid { grid-template-columns: 1fr; gap: 60px; }
+      .flash-card { flex: 0 0 300px; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+      .insta-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    }
+
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      a, button { cursor: auto; }
+      .cursor, .cursor-dot { display: none; }
+
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-content { padding: 0 24px; }
+      .hero-scroll-indicator { left: 50%; bottom: 24px; }
+
+      .about .container,
+      .flash-header,
+      .instagram .container,
+      .contact .container,
+      footer .container {
+        padding: 0 24px;
+      }
+
+      .about { padding: 100px 0; }
+      .about-grid { gap: 40px; }
+      .about-image-frame { display: none; }
+
+      .flash { padding: 80px 0 0; }
+      .flash-card { flex: 0 0 280px; }
+      .flash-track { padding: 0 24px; }
+
+      .editorial-break { padding: 100px 24px; }
+
+      .instagram { padding: 80px 0; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
+
+      .contact { padding: 100px 0; }
+      .contact-form { padding: 32px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+
+      .footer-top { flex-direction: column; gap: 40px; }
+      .footer-links { gap: 40px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-word-huge { font-size: 2.8rem; letter-spacing: 0.04em; }
+      .flash-card { flex: 0 0 85vw; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <svg class="loader-logo" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M110 55 C120 30, 135 15, 140 10 C125 18, 112 35, 108 55 C104 75, 112 95, 128 108 C135 114, 140 115, 145 115 C130 120, 110 110, 100 90 C92 72, 95 60, 110 55 Z" stroke="#6B7F56" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+      <path d="M45 155 C30 145, 20 125, 22 108 C23 95, 30 88, 38 92" stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M58 160 C55 155, 48 135, 48 120 C48 105, 52 95, 60 88 C65 84, 72 82, 80 82 C88 82, 95 84, 100 88 C108 95, 112 105, 112 120 C112 135, 105 155, 102 160" stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M72 110 C76 118, 84 118, 88 110" stroke="#6B7F56" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M55 82 C55 68, 62 56, 80 56 C98 56, 105 68, 105 82" stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M58 70 L48 42 L68 62" stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M102 70 L112 42 L92 62" stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M65 74 C67 70, 73 70, 75 74 C73 77, 67 77, 65 74 Z" stroke="#6B7F56" stroke-width="2.5" fill="#6B7F56"/>
+      <path d="M85 74 C87 70, 93 70, 95 74 C93 77, 87 77, 85 74 Z" stroke="#6B7F56" stroke-width="2.5" fill="#6B7F56"/>
+      <path d="M77 79 L80 82 L83 79 Z" fill="#6B7F56"/>
+      <path d="M76 86 C78 88, 82 88, 84 86" stroke="#6B7F56" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <line x1="68" y1="81" x2="42" y2="76" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+      <line x1="68" y1="84" x2="40" y2="84" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+      <line x1="92" y1="81" x2="118" y2="76" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+      <line x1="92" y1="84" x2="120" y2="84" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- Skip Link -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Nav -->
+  <nav aria-label="Main navigation">
+    <a href="#" class="nav-logo" aria-label="Liztattooz — home">
+      <svg viewBox="20 35 120 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M110 55 C120 30, 135 15, 140 10 C125 18, 112 35, 108 55 C104 75, 112 95, 128 108 C135 114, 140 115, 145 115 C130 120, 110 110, 100 90 C92 72, 95 60, 110 55 Z" stroke="#8FA874" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+        <path d="M45 155 C30 145, 20 125, 22 108 C23 95, 30 88, 38 92" stroke="#8FA874" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M58 160 C55 155, 48 135, 48 120 C48 105, 52 95, 60 88 C65 84, 72 82, 80 82 C88 82, 95 84, 100 88 C108 95, 112 105, 112 120 C112 135, 105 155, 102 160" stroke="#8FA874" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M55 82 C55 68, 62 56, 80 56 C98 56, 105 68, 105 82" stroke="#8FA874" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M58 70 L48 42 L68 62" stroke="#8FA874" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M102 70 L112 42 L92 62" stroke="#8FA874" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M65 74 C67 70, 73 70, 75 74 C73 77, 67 77, 65 74 Z" fill="#8FA874"/>
+        <path d="M85 74 C87 70, 93 70, 95 74 C93 77, 87 77, 85 74 Z" fill="#8FA874"/>
+        <path d="M77 79 L80 82 L83 79 Z" fill="#8FA874"/>
+        <line x1="68" y1="81" x2="48" y2="77" stroke="#8FA874" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="68" y1="84" x2="46" y2="84" stroke="#8FA874" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="92" y1="81" x2="112" y2="77" stroke="#8FA874" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="92" y1="84" x2="114" y2="84" stroke="#8FA874" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Liztattooz</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#flash">Flash</a></li>
+      <li><a href="#instagram">Follow</a></li>
+      <li><a href="#contact">Book</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Navigation menu" aria-hidden="true">
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#flash" onclick="closeMobile()">Flash</a>
+    <a href="#instagram" onclick="closeMobile()">Follow</a>
+    <a href="#contact" onclick="closeMobile()">Book</a>
+  </div>
+
+  <main id="main">
+
+  <!-- Hero — Center Stage Dramatic -->
+  <section class="hero" id="hero" aria-label="Introduction">
+    <div class="hero-bg">
+      <img src="james-discombe-06o01CtKjGw-unsplash.jpg" alt="" loading="eager" aria-hidden="true">
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">American Traditional Tattoo</p>
+      <h1 class="hero-title">
+        <span class="line"><span class="hero-word-huge">LIZTATTOOZ</span></span>
+      </h1>
+      <p class="hero-tagline">Ink with <em>intention.</em></p>
+      <p class="hero-subtitle">Every piece drawn by hand. Worn for life.</p>
+      <a href="#contact" class="magnetic-btn" data-magnetic>
+        Book Your Session
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image-wrap img-reveal">
+          <img src="eduardo-vaccari-K-AYEQtf5-w-unsplash (1).jpg" alt="Close-up of bold American Traditional tattoos on an arm">
+          <div class="about-image-frame"></div>
+        </div>
+        <div>
+          <p class="section-label reveal">The Artist</p>
+          <h2 class="about-heading reveal reveal-delay-1">Rooted in <em>tradition,</em><br>drawn by hand.</h2>
+          <p class="about-text reveal reveal-delay-2">
+            Liztattooz creates bold, clean American Traditional work that honors the roots of the craft. Every flash design is hand-drawn with intention — thick outlines, saturated color, and imagery that stands the test of time.
+          </p>
+          <p class="about-text reveal reveal-delay-2">
+            Based in the studio with a cat on the desk and a Vogue on the shelf, Liz brings an eye for editorial design to every piece. The work is always sharp, always timeless.
+          </p>
+          <div class="about-divider reveal reveal-delay-3"></div>
+          <p class="about-pull-quote reveal reveal-delay-3">
+            &ldquo;A good tattoo should look like it was always supposed to be there.&rdquo;
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee Strip -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-inner">
+      <div class="marquee-item">
+        <span>Bold Lines</span><div class="marquee-dot"></div>
+        <span>Rich Color</span><div class="marquee-dot"></div>
+        <span>Timeless Craft</span><div class="marquee-dot"></div>
+        <span>Hand Drawn</span><div class="marquee-dot"></div>
+        <span>American Traditional</span><div class="marquee-dot"></div>
+        <span>One of One</span><div class="marquee-dot"></div>
+        <span>Worn for Life</span><div class="marquee-dot"></div>
+        <span>No Repeats</span><div class="marquee-dot"></div>
+      </div>
+      <div class="marquee-item">
+        <span>Bold Lines</span><div class="marquee-dot"></div>
+        <span>Rich Color</span><div class="marquee-dot"></div>
+        <span>Timeless Craft</span><div class="marquee-dot"></div>
+        <span>Hand Drawn</span><div class="marquee-dot"></div>
+        <span>American Traditional</span><div class="marquee-dot"></div>
+        <span>One of One</span><div class="marquee-dot"></div>
+        <span>Worn for Life</span><div class="marquee-dot"></div>
+        <span>No Repeats</span><div class="marquee-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flash Gallery — Horizontal Drag -->
+  <section class="flash" id="flash">
+    <div class="flash-header">
+      <p class="section-label reveal">Flash Gallery</p>
+      <h2 class="flash-title reveal reveal-delay-1">Claim Your <em>Flash</em></h2>
+      <p class="flash-subtitle reveal reveal-delay-2">One design. One body. No repeats.</p>
+    </div>
+    <div class="flash-track-wrapper">
+      <div class="flash-track" id="flashTrack">
+        <div class="flash-card">
+          <a href="#contact" aria-label="Classic Rose — available, click to book">
+            <div class="flash-card-image">
+              <img src="stories-ink-tattoo-care-kZuIc5Jtmfc-unsplash.jpg" alt="American Traditional tattoos — swallow, rose, dagger, and bold lettering on crossed legs" loading="lazy">
+            </div>
+            <span class="flash-card-number">01</span>
+            <div class="flash-card-info">
+              <h4>Classic Rose</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Dagger and Snake — available, click to book">
+            <div class="flash-card-image">
+              <img src="brandon-morales-EjrrZ8j-o_E-unsplash.jpg" alt="American Traditional sleeve — bold religious imagery and classic banner lettering" loading="lazy">
+            </div>
+            <span class="flash-card-number">02</span>
+            <div class="flash-card-info">
+              <h4>Dagger & Snake</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Panther Head — available, click to book">
+            <div class="flash-card-image">
+              <img src="matt-connor-ED4te8-nRwU-unsplash.jpg" alt="Tattoo artist inking a traditional panther and mace ball design" loading="lazy">
+            </div>
+            <span class="flash-card-number">03</span>
+            <div class="flash-card-info">
+              <h4>Panther Head</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Eagle Traditional — available, click to book">
+            <div class="flash-card-image">
+              <img src="https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=600&h=800&fit=crop" alt="Traditional tattoo flash — spread eagle" loading="lazy">
+            </div>
+            <span class="flash-card-number">04</span>
+            <div class="flash-card-info">
+              <h4>Eagle Traditional</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Cat and Moon — available, click to book">
+            <div class="flash-card-image">
+              <img src="https://images.unsplash.com/photo-1542556398-95fb5b9f9b48?w=600&h=800&fit=crop" alt="Traditional tattoo flash — cat silhouette with crescent moon" loading="lazy">
+            </div>
+            <span class="flash-card-number">05</span>
+            <div class="flash-card-info">
+              <h4>Cat & Moon</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Sacred Heart — available, click to book">
+            <div class="flash-card-image">
+              <img src="https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?w=600&h=800&fit=crop" alt="Traditional tattoo flash — sacred heart with flames" loading="lazy">
+            </div>
+            <span class="flash-card-number">06</span>
+            <div class="flash-card-info">
+              <h4>Sacred Heart</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Swallow Pair — available, click to book">
+            <div class="flash-card-image">
+              <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&h=800&fit=crop" alt="Traditional tattoo flash — pair of swallows in flight" loading="lazy">
+            </div>
+            <span class="flash-card-number">07</span>
+            <div class="flash-card-info">
+              <h4>Swallow Pair</h4>
+              <p>Available</p>
+            </div>
+          </a>
+        </div>
+        <div class="flash-card">
+          <a href="#contact" aria-label="Anchor and Banner — claimed">
+            <div class="flash-card-image">
+              <img src="https://images.unsplash.com/photo-1565058379802-bbe93b2f703a?w=600&h=800&fit=crop" alt="Traditional tattoo flash — anchor with ribbon banner" loading="lazy">
+            </div>
+            <span class="flash-card-number">08</span>
+            <div class="flash-card-info">
+              <h4>Anchor & Banner</h4>
+              <p>Claimed</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <p class="flash-drag-hint" aria-hidden="true">Drag to explore</p>
+    </div>
+  </section>
+
+  <!-- Editorial Quote -->
+  <section class="editorial-break" aria-label="Artist quote">
+    <div class="reveal">
+      <blockquote>
+        &ldquo;Bold enough to see <strong>across the room</strong>, personal enough to mean something when you <strong>look down</strong>.&rdquo;
+      </blockquote>
+      <cite>Liz, Liztattooz</cite>
+    </div>
+  </section>
+
+  <!-- Marquee Strip 2 -->
+  <div class="marquee-strip reverse" aria-hidden="true">
+    <div class="marquee-inner">
+      <div class="marquee-item">
+        <span>Flash Available</span><div class="marquee-dot"></div>
+        <span>Now Booking</span><div class="marquee-dot"></div>
+        <span>Cats Welcome</span><div class="marquee-dot"></div>
+        <span>Walk-Ins by Luck</span><div class="marquee-dot"></div>
+        <span>Liztattooz</span><div class="marquee-dot"></div>
+        <span>Ink with Intention</span><div class="marquee-dot"></div>
+        <span>No Filler</span><div class="marquee-dot"></div>
+        <span>All Killer</span><div class="marquee-dot"></div>
+      </div>
+      <div class="marquee-item">
+        <span>Flash Available</span><div class="marquee-dot"></div>
+        <span>Now Booking</span><div class="marquee-dot"></div>
+        <span>Cats Welcome</span><div class="marquee-dot"></div>
+        <span>Walk-Ins by Luck</span><div class="marquee-dot"></div>
+        <span>Liztattooz</span><div class="marquee-dot"></div>
+        <span>Ink with Intention</span><div class="marquee-dot"></div>
+        <span>No Filler</span><div class="marquee-dot"></div>
+        <span>All Killer</span><div class="marquee-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instagram -->
+  <section class="instagram" id="instagram">
+    <div class="container">
+      <div class="insta-header">
+        <div>
+          <p class="section-label reveal">Follow Along</p>
+          <h2 class="insta-heading reveal reveal-delay-1">@liztattooz</h2>
+          <p class="insta-sub reveal reveal-delay-2">Healed work, studio days & cat content</p>
+        </div>
+        <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" class="insta-follow-link reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          Follow
+        </a>
+      </div>
+      <div class="insta-grid">
+        <div class="insta-grid-item">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="View on Instagram — tattoo session">
+            <img src="https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=400&h=400&fit=crop" alt="Tattoo session in progress, bold line work" loading="lazy">
+          </a>
+        </div>
+        <div class="insta-grid-item">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="View on Instagram — studio cat">
+            <img src="https://images.unsplash.com/photo-1415369629372-26f2fe60c467?w=400&h=400&fit=crop" alt="Tabby cat lounging on studio desk" loading="lazy">
+          </a>
+        </div>
+        <div class="insta-grid-item">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="View on Instagram — studio interior">
+            <img src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?w=400&h=400&fit=crop" alt="Warm-lit tattoo studio with flash sheets" loading="lazy">
+          </a>
+        </div>
+        <div class="insta-grid-item">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="View on Instagram — cat portrait">
+            <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=400&h=400&fit=crop" alt="White cat with green eyes" loading="lazy">
+          </a>
+        </div>
+        <div class="insta-grid-item">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="View on Instagram — healed work">
+            <img src="https://images.unsplash.com/photo-1562962230-16e4623d36e6?w=400&h=400&fit=crop" alt="Healed traditional rose tattoo" loading="lazy">
+          </a>
+        </div>
+        <div class="insta-grid-item">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="View on Instagram — cat napping">
+            <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=400&h=400&fit=crop" alt="Gray cat curled up sleeping" loading="lazy">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="contact-bg"></div>
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <p class="section-label reveal">Bookings</p>
+          <h2 class="contact-heading reveal reveal-delay-1">Let's make<br>something <em>bold.</em></h2>
+          <p class="contact-text reveal reveal-delay-2">
+            Send over the flash piece you want (or your custom idea), your preferred placement, and dates that work. I'll be in touch within 48 hours.
+          </p>
+          <div class="contact-details reveal reveal-delay-3">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+              </div>
+              <div>
+                <p class="contact-item-label">Email</p>
+                <p class="contact-item-value"><a href="mailto:book@liztattooz.com">book@liztattooz.com</a></p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+              </div>
+              <div>
+                <p class="contact-item-label">Instagram</p>
+                <p class="contact-item-value"><a href="https://instagram.com/liztattooz" target="_blank" rel="noopener">@liztattooz</a></p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <p class="contact-item-label">Studio</p>
+                <p class="contact-item-value">By appointment only</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="contact-form">
+            <h3>Book a Session</h3>
+            <p>Tell me what you want — I'll be in touch.</p>
+            <form id="bookingForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="name" name="name" placeholder="First + last" required aria-required="true" autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+                  <input type="email" id="email" name="email" placeholder="you@email.com" required aria-required="true" autocomplete="email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="piece">Flash Piece / Idea</label>
+                <select id="piece" name="piece">
+                  <option value="">Select a flash piece or describe below</option>
+                  <option value="Classic Rose">Classic Rose</option>
+                  <option value="Dagger & Snake">Dagger & Snake</option>
+                  <option value="Panther Head">Panther Head</option>
+                  <option value="Eagle Traditional">Eagle Traditional</option>
+                  <option value="Cat & Moon">Cat & Moon</option>
+                  <option value="Sacred Heart">Sacred Heart</option>
+                  <option value="Swallow Pair">Swallow Pair</option>
+                  <option value="Custom Piece">Custom — describe below</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="placement">Placement & Size</label>
+                <input type="text" id="placement" name="placement" placeholder="e.g. Inner forearm, palm-sized">
+              </div>
+              <div class="form-group">
+                <label for="message">Details & Preferred Dates</label>
+                <textarea id="message" name="message" placeholder="Custom idea details, dates, questions..."></textarea>
+              </div>
+              <button type="submit" class="form-submit">Send Booking Request</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <svg viewBox="20 35 120 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M110 55 C120 30, 135 15, 140 10 C125 18, 112 35, 108 55 C104 75, 112 95, 128 108 C135 114, 140 115, 145 115 C130 120, 110 110, 100 90 C92 72, 95 60, 110 55 Z" stroke="#6B7F56" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+            <path d="M45 155 C30 145, 20 125, 22 108 C23 95, 30 88, 38 92" stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M58 160 C55 155, 48 135, 48 120 C48 105, 52 95, 60 88 C65 84, 72 82, 80 82 C88 82, 95 84, 100 88 C108 95, 112 105, 112 120 C112 135, 105 155, 102 160" stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M55 82 C55 68, 62 56, 80 56 C98 56, 105 68, 105 82" stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M58 70 L48 42 L68 62" stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M102 70 L112 42 L92 62" stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M65 74 C67 70, 73 70, 75 74 C73 77, 67 77, 65 74 Z" fill="#6B7F56"/>
+            <path d="M85 74 C87 70, 93 70, 95 74 C93 77, 87 77, 85 74 Z" fill="#6B7F56"/>
+            <path d="M77 79 L80 82 L83 79 Z" fill="#6B7F56"/>
+            <line x1="68" y1="81" x2="48" y2="77" stroke="#6B7F56" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="68" y1="84" x2="46" y2="84" stroke="#6B7F56" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="92" y1="81" x2="112" y2="77" stroke="#6B7F56" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="92" y1="84" x2="114" y2="84" stroke="#6B7F56" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <p class="footer-brand-name">Liztattooz</p>
+          <p class="footer-brand-sub">American Traditional Tattoo</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Navigate</h4>
+            <ul>
+              <li><a href="#about">About</a></li>
+              <li><a href="#flash">Flash Gallery</a></li>
+              <li><a href="#instagram">Instagram</a></li>
+              <li><a href="#contact">Book Now</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Info</h4>
+            <ul>
+              <li><a href="#contact">Booking Policy</a></li>
+              <li><a href="#flash">Flash Rules</a></li>
+              <li><a href="#contact">Aftercare</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Liztattooz. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="https://instagram.com/liztattooz" target="_blank" rel="noopener" aria-label="Follow Liztattooz on Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="mailto:book@liztattooz.com" aria-label="Email Liztattooz">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script>
+    // ── Loader ──
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('done');
+        document.querySelector('.hero').classList.add('in-view');
+        // Stagger hero elements
+        const eyebrow = document.querySelector('.hero-eyebrow');
+        const tagline = document.querySelector('.hero-tagline');
+        const subtitle = document.querySelector('.hero-subtitle');
+        const btn = document.querySelector('.magnetic-btn');
+        setTimeout(() => { eyebrow.style.opacity = '1'; eyebrow.style.transform = 'translateY(0)'; eyebrow.style.transition = 'all 0.8s ease'; }, 400);
+        setTimeout(() => { tagline.style.opacity = '1'; tagline.style.transform = 'translateY(0)'; tagline.style.transition = 'all 0.8s ease'; }, 700);
+        setTimeout(() => { subtitle.style.opacity = '1'; subtitle.style.transform = 'translateY(0)'; subtitle.style.transition = 'all 0.8s ease'; }, 950);
+        setTimeout(() => { btn.style.opacity = '1'; btn.style.transform = 'translateY(0)'; btn.style.transition = 'all 0.8s ease'; }, 1150);
+      }, 2600);
+    });
+
+    // ── Custom Cursor ──
+    const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursorDot');
+    let cursorX = 0, cursorY = 0, dotX = 0, dotY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
+      cursorDot.style.left = cursorX + 'px';
+      cursorDot.style.top = cursorY + 'px';
+    });
+
+    function animateCursor() {
+      dotX += (cursorX - dotX) * 0.15;
+      dotY += (cursorY - dotY) * 0.15;
+      cursor.style.left = dotX + 'px';
+      cursor.style.top = dotY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Cursor hover states
+    const hoverTargets = document.querySelectorAll('a, button, .flash-card, input, textarea, select, .form-submit');
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // ── Hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+      if (isOpen) mobileMenu.querySelector('a').focus();
+    });
+
+    function closeMobile() {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMobile();
+        hamburger.focus();
+      }
+    });
+
+    // ── Scroll reveals ──
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal, .img-reveal').forEach(el => revealObserver.observe(el));
+
+    // Flash card stagger reveal
+    const flashObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const cards = document.querySelectorAll('.flash-card');
+          cards.forEach((card, i) => {
+            setTimeout(() => card.classList.add('card-visible'), i * 120);
+          });
+          flashObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    flashObserver.observe(document.querySelector('.flash-track-wrapper'));
+
+    // ── Horizontal drag gallery ──
+    const track = document.getElementById('flashTrack');
+    let isDragging = false, startX = 0, scrollLeft = 0, currentTranslate = 0;
+
+    track.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.pageX;
+      scrollLeft = currentTranslate;
+      track.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.pageX - startX;
+      const maxScroll = -(track.scrollWidth - track.parentElement.clientWidth);
+      currentTranslate = Math.max(maxScroll, Math.min(0, scrollLeft + dx));
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      track.style.cursor = '';
+    });
+
+    // Touch support
+    track.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].pageX;
+      scrollLeft = currentTranslate;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const dx = e.touches[0].pageX - startX;
+      const maxScroll = -(track.scrollWidth - track.parentElement.clientWidth);
+      currentTranslate = Math.max(maxScroll, Math.min(0, scrollLeft + dx));
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    }, { passive: true });
+
+    track.addEventListener('touchend', () => { isDragging = false; });
+
+    // Keyboard nav for flash gallery
+    const flashSection = document.getElementById('flash');
+    flashSection.setAttribute('tabindex', '0');
+    flashSection.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const step = e.key === 'ArrowRight' ? -320 : 320;
+        const maxScroll = -(track.scrollWidth - track.parentElement.clientWidth);
+        currentTranslate = Math.max(maxScroll, Math.min(0, currentTranslate + step));
+        track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        track.style.transform = `translateX(${currentTranslate}px)`;
+        setTimeout(() => { track.style.transition = 'transform 0.05s linear'; }, 500);
+      }
+    });
+
+    // ── Magnetic button effect ──
+    document.querySelectorAll('[data-magnetic]').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // ── Scroll effects: nav, parallax, back-to-top ──
+    const navEl = document.querySelector('nav');
+    const backToTop = document.getElementById('backToTop');
+    const heroBg = document.querySelector('.hero-bg img');
+    const heroH = window.innerHeight;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      navEl.classList.toggle('scrolled', scrollY > 80);
+      backToTop.classList.toggle('visible', scrollY > heroH);
+      if (scrollY < heroH * 1.2) {
+        heroBg.style.transform = `scale(1.1) translateY(${scrollY * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Smooth scroll for anchor links ──
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ── Form → mailto ──
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const piece = document.getElementById('piece').value;
+      const placement = document.getElementById('placement').value;
+      const message = document.getElementById('message').value;
+
+      if (!name.trim() || !email.trim()) {
+        alert('Please fill in your name and email.');
+        return;
+      }
+
+      const subject = encodeURIComponent(`Booking Request — ${piece || 'Custom Piece'}`);
+      const body = encodeURIComponent(
+        `Hi Liz!\n\nI'd love to book a session.\n\nName: ${name}\nEmail: ${email}\nFlash Piece: ${piece || 'Custom — see below'}\nPlacement: ${placement}\n\n${message}\n\nLooking forward to hearing from you!`
+      );
+
+      window.location.href = `mailto:book@liztattooz.com?subject=${subject}&body=${body}`;
+    });
+  </script>
+
+</body>
+</html>

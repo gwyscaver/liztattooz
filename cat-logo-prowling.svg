@@ -1,0 +1,54 @@
+<svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- American Traditional Prowling Panther-Cat -->
+  <!-- Bold outlines, arched back, fierce but feline -->
+
+  <!-- Body — arched prowling pose -->
+  <path d="M30 105 C30 105, 35 65, 55 55 C65 50, 72 52, 78 58 C85 65, 95 55, 105 50 C115 45, 125 48, 130 55 C140 68, 145 60, 155 58 C165 56, 172 62, 170 75 C168 88, 158 100, 148 105"
+        stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Head -->
+  <path d="M148 105 C148 105, 165 95, 172 85 C176 79, 178 72, 175 68"
+        stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- Pointed ears -->
+  <path d="M160 72 L155 52 L149 68" stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M172 68 L174 48 L168 64" stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Eye — bold almond shape, fierce -->
+  <ellipse cx="164" cy="78" rx="4.5" ry="3" fill="#6B7F56"/>
+  <circle cx="165.5" cy="78" r="1.2" fill="#0D1612"/>
+
+  <!-- Nose + mouth snarl -->
+  <path d="M170 83 L172 85 L170 87" stroke="#6B7F56" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M172 85 C174 86, 176 85, 177 83" stroke="#6B7F56" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- Whiskers — bold -->
+  <line x1="173" y1="82" x2="190" y2="78" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+  <line x1="173" y1="85" x2="192" y2="84" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+  <line x1="173" y1="88" x2="190" y2="90" stroke="#6B7F56" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Front legs — bold strokes, extended prowl -->
+  <path d="M148 105 C148 108, 150 118, 152 130 C152 135, 148 138, 145 138 L155 138 C155 135, 155 130, 153 125"
+        stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M130 95 C130 100, 128 115, 130 130 C130 135, 126 138, 123 138 L133 138 C133 135, 133 125, 132 118"
+        stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Back legs — coiled, powerful -->
+  <path d="M55 90 C50 95, 42 110, 45 130 C45 135, 41 138, 38 138 L48 138 C48 135, 48 125, 47 118"
+        stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M72 85 C68 95, 65 112, 68 130 C68 135, 64 138, 61 138 L71 138 C71 135, 71 125, 70 115"
+        stroke="#6B7F56" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Belly line -->
+  <path d="M55 100 C70 112, 90 115, 110 110 C125 107, 140 105, 148 105"
+        stroke="#6B7F56" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Tail — curled up, bold -->
+  <path d="M30 105 C22 95, 15 80, 12 65 C10 55, 14 45, 22 42 C28 40, 32 44, 30 50"
+        stroke="#6B7F56" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- Small decorative stars — traditional tattoo flair -->
+  <path d="M85 38 L87 32 L89 38 L95 40 L89 42 L87 48 L85 42 L79 40 Z" fill="#6B7F56" opacity="0.6"/>
+  <circle cx="110" cy="35" r="2" fill="#6B7F56" opacity="0.5"/>
+  <circle cx="140" cy="40" r="1.5" fill="#6B7F56" opacity="0.4"/>
+</svg>
