@@ -1267,6 +1267,37 @@
       padding: 0;
     }
 
+    /* File upload styling */
+    .file-upload-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .file-upload-btn {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border: 1px solid var(--dark-border);
+      background: var(--dark);
+      color: var(--cream);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+      margin-bottom: 0 !important;
+    }
+    .file-upload-btn:hover {
+      border-color: var(--olive);
+    }
+    .file-upload-name {
+      font-size: 0.8rem;
+      color: var(--warm-gray);
+      font-style: italic;
+    }
+
     /* Form hint text */
     .form-hint {
       font-size: 0.7rem;
@@ -1809,6 +1840,19 @@
                 <label for="piece">Flash Piece / Idea</label>
                 <textarea id="piece" name="piece" placeholder="Describe the flash piece you're interested in, or your custom idea..." style="min-height: 80px;"></textarea>
               </div>
+              <!-- Reference image upload -->
+              <div class="form-group">
+                <label for="refImage">Reference Image</label>
+                <div class="file-upload-wrapper">
+                  <label for="refImage" class="file-upload-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Choose File
+                  </label>
+                  <span class="file-upload-name" id="fileName">No file chosen</span>
+                  <input type="file" id="refImage" name="refImage" accept="image/*" style="display: none;">
+                </div>
+                <p class="form-hint">Upload a reference photo or screenshot of the flash you want. Max 5MB.</p>
+              </div>
               <!-- Placement -->
               <div class="form-group">
                 <label for="placement">Placement & Size</label>
@@ -2115,6 +2159,23 @@
     const SUPABASE_URL = 'https://raxxodamnkhrwghnnaww.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_TsDj0ZMC7lvZAXCObyFWLw_YClzaa9J';
 
+    // ── File upload display ──
+    document.getElementById('refImage').addEventListener('change', function() {
+      const nameSpan = document.getElementById('fileName');
+      if (this.files.length > 0) {
+        const file = this.files[0];
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File is too large. Please choose an image under 5MB.');
+          this.value = '';
+          nameSpan.textContent = 'No file chosen';
+          return;
+        }
+        nameSpan.textContent = file.name;
+      } else {
+        nameSpan.textContent = 'No file chosen';
+      }
+    });
+
     // ── Form submission → Supabase + Email ──
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -2128,6 +2189,8 @@
       const piece = document.getElementById('piece').value.trim();
       const placement = document.getElementById('placement').value.trim();
       const message = document.getElementById('message').value.trim();
+      const fileInput = document.getElementById('refImage');
+      const file = fileInput.files[0] || null;
 
       // Validate required fields
       if (!firstName || !lastName) {
@@ -2148,6 +2211,30 @@
       submitBtn.textContent = 'SENDING...';
       submitBtn.disabled = true;
 
+      // Upload reference image to Supabase Storage (if provided)
+      let imageUrl = null;
+      if (file) {
+        try {
+          const timestamp = Date.now();
+          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          const filePath = `${timestamp}_${safeName}`;
+          const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/reference-images/${filePath}`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': file.type
+            },
+            body: file
+          });
+          if (uploadRes.ok) {
+            imageUrl = `${SUPABASE_URL}/storage/v1/object/public/reference-images/${filePath}`;
+          }
+        } catch (err) {
+          console.error('Image upload error:', err);
+        }
+      }
+
       // Save to Supabase
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/bookings`, {
@@ -2167,7 +2254,8 @@
             returning_client: returningClient,
             piece: piece || null,
             placement: placement || null,
-            message: message || null
+            message: message || null,
+            reference_image_url: imageUrl
           })
         });
 
@@ -2187,7 +2275,8 @@
           returning_client: returningClient ? 'Yes' : 'No',
           piece: piece || 'Not specified',
           placement: placement || 'Not specified',
-          message: message || 'No additional details'
+          message: message || 'No additional details',
+          reference_image: imageUrl || 'No image uploaded'
         });
 
         // Show success message
