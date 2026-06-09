@@ -880,6 +880,29 @@
       animation-name: marqueeScrollReverse;
     }
 
+    /* ── Section Scroll Divider ── */
+    .section-scroll {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 0;
+    }
+    .section-scroll::before,
+    .section-scroll::after {
+      content: '';
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--caramel), transparent);
+    }
+    .section-scroll .scroll-icon {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--caramel);
+      border-radius: 50%;
+      margin: 0 20px;
+      opacity: 0.6;
+    }
+
     /* ── Instagram ── */
     .instagram {
       padding: 120px 0;
@@ -1637,8 +1660,8 @@
     <div class="curator-feed-wrapper" style="max-width: 1300px; margin: 0 auto; padding: 0 48px;">
       <div id="curator-feed-gallery1"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
     </div>
+    <div class="section-scroll"><div class="scroll-icon"></div></div>
   </section>
-
 
   <!-- Marquee Strip 2 -->
   <div class="marquee-strip reverse" aria-hidden="true">
@@ -1680,6 +1703,7 @@
       </div>
       <div id="curator-feed-default-feed-layout"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
     </div>
+    <div class="section-scroll"><div class="scroll-icon"></div></div>
   </section>
 
   <!-- Contact -->
