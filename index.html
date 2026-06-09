@@ -1992,22 +1992,26 @@
 
     document.querySelectorAll('.reveal, .img-reveal').forEach(el => revealObserver.observe(el));
 
-    // Flash card stagger reveal
-    const flashObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const cards = document.querySelectorAll('.flash-card');
-          cards.forEach((card, i) => {
-            setTimeout(() => card.classList.add('card-visible'), i * 120);
-          });
-          flashObserver.disconnect();
-        }
-      });
-    }, { threshold: 0.1 });
-    flashObserver.observe(document.querySelector('.flash-track-wrapper'));
+    // Flash card stagger reveal (only if gallery exists)
+    const flashWrapper = document.querySelector('.flash-track-wrapper');
+    if (flashWrapper) {
+      const flashObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const cards = document.querySelectorAll('.flash-card');
+            cards.forEach((card, i) => {
+              setTimeout(() => card.classList.add('card-visible'), i * 120);
+            });
+            flashObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.1 });
+      flashObserver.observe(flashWrapper);
+    }
 
-    // ── Horizontal drag gallery ──
+    // ── Horizontal drag gallery (only if the static gallery exists) ──
     const track = document.getElementById('flashTrack');
+    if (track) {
     let isDragging = false, startX = 0, scrollLeft = 0, currentTranslate = 0;
 
     track.addEventListener('mousedown', (e) => {
@@ -2062,6 +2066,7 @@
         setTimeout(() => { track.style.transition = 'transform 0.05s linear'; }, 500);
       }
     });
+    } // end if (track)
 
     // ── Magnetic button effect ──
     document.querySelectorAll('[data-magnetic]').forEach(btn => {
