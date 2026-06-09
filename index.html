@@ -1883,6 +1883,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
 
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init('8EumqL1Zlv51YPl9p');</script>
+
   <!-- Curator.io feeds -->
   <script type="text/javascript">
   /* curator-feed-gallery1 */
@@ -2163,6 +2167,23 @@
         });
 
         if (!res.ok) throw new Error('Failed to save booking');
+      } catch (err) {
+        console.error('Supabase error:', err);
+      }
+
+      // Send email notification via EmailJS
+      try {
+        await emailjs.send('service_l9dhlxw', 'template_7rhbyhy', {
+          first_name: firstName,
+          last_name: lastName,
+          email: email || 'Not provided',
+          phone: phone || 'Not provided',
+          contact_pref: contactPref === 'email' ? 'Email' : 'Text',
+          returning_client: returningClient ? 'Yes' : 'No',
+          piece: piece || 'Not specified',
+          placement: placement || 'Not specified',
+          message: message || 'No additional details'
+        });
 
         // Show success message
         const form = document.getElementById('bookingForm');
@@ -2173,19 +2194,11 @@
           </div>
         `;
       } catch (err) {
-        console.error('Supabase error:', err);
-        // Still send via email as fallback
-        alert('Booking saved! Opening your email to send the request...');
+        console.error('EmailJS error:', err);
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        alert('Something went wrong sending your request. Please try again or email Tattoosbylizzz@gmail.com directly.');
       }
-
-      // Also open mailto so Liz gets an email notification
-      const fullName = `${firstName} ${lastName}`;
-      const subject = encodeURIComponent(`Booking Request — ${piece || 'Custom Piece'}`);
-      const body = encodeURIComponent(
-        `Hi Liz!\n\nI'd love to book a session.\n\nName: ${fullName}\nEmail: ${email || 'Not provided'}\nPhone: ${phone || 'Not provided'}\nPreferred Contact: ${contactPref}\nReturning Client: ${returningClient ? 'Yes' : 'No'}\nFlash Piece/Idea: ${piece || 'Not specified'}\nPlacement: ${placement || 'Not specified'}\n\n${message}\n\nLooking forward to hearing from you!`
-      );
-
-      window.location.href = `mailto:Tattoosbylizzz@gmail.com?subject=${subject}&body=${body}`;
     });
   </script>
 
