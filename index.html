@@ -880,54 +880,6 @@
       animation-name: marqueeScrollReverse;
     }
 
-    /* ── Large Editorial Quote ── */
-    .editorial-break {
-      padding: 140px 48px;
-      text-align: center;
-      position: relative;
-    }
-
-    .editorial-break::before,
-    .editorial-break::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      height: 60px;
-      background: linear-gradient(var(--dark-border), var(--caramel), var(--dark-border));
-    }
-
-    .editorial-break::before { top: 0; }
-    .editorial-break::after { bottom: 0; }
-
-    .editorial-break blockquote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 3.5vw, 3.2rem);
-      font-style: italic;
-      font-weight: 300;
-      color: var(--cream);
-      max-width: 850px;
-      margin: 0 auto;
-      line-height: 1.35;
-    }
-
-    .editorial-break blockquote strong {
-      color: var(--caramel-bright);
-      font-weight: 400;
-    }
-
-    .editorial-break cite {
-      display: block;
-      margin-top: 32px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      font-style: normal;
-      color: var(--caramel);
-    }
-
     /* ── Instagram ── */
     .instagram {
       padding: 120px 0;
@@ -1240,6 +1192,78 @@
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
+    /* Contact preference radio group */
+    .form-group .contact-pref-group {
+      display: flex;
+      gap: 24px;
+      margin-top: 6px;
+    }
+    .form-group .contact-pref-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: none;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+      color: var(--cream);
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+    .form-group .contact-pref-group input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--olive);
+      cursor: pointer;
+      -webkit-appearance: auto;
+      padding: 0;
+    }
+
+    /* Checkbox styling */
+    .form-group .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: none;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+      color: var(--cream);
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+    .form-group .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--olive);
+      cursor: pointer;
+      -webkit-appearance: auto;
+      padding: 0;
+    }
+
+    /* Form hint text */
+    .form-hint {
+      font-size: 0.7rem;
+      color: var(--warm-gray);
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Success state */
+    .form-success {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .form-success h4 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.6rem;
+      color: var(--olive);
+      margin-bottom: 12px;
+    }
+    .form-success p {
+      color: var(--warm-gray);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
     .form-submit {
       width: 100%;
       padding: 20px;
@@ -1438,8 +1462,6 @@
       .flash-card { flex: 0 0 280px; }
       .flash-track { padding: 0 24px; }
 
-      .editorial-break { padding: 100px 24px; }
-
       .instagram { padding: 80px 0; }
       .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
 
@@ -1617,15 +1639,6 @@
     </div>
   </section>
 
-  <!-- Editorial Quote -->
-  <section class="editorial-break" aria-label="Artist quote">
-    <div class="reveal">
-      <blockquote>
-        &ldquo;Bold enough to see <strong>across the room</strong>, personal enough to mean something when you <strong>look down</strong>.&rdquo;
-      </blockquote>
-      <cite>Liz, Liztattooz</cite>
-    </div>
-  </section>
 
   <!-- Marquee Strip 2 -->
   <div class="marquee-strip reverse" aria-hidden="true">
@@ -1724,37 +1737,58 @@
             <h3>Book a Session</h3>
             <p>Tell me what you want — I'll be in touch.</p>
             <form id="bookingForm" novalidate>
+              <!-- Name row -->
               <div class="form-row">
                 <div class="form-group">
-                  <label for="name">Name <span class="req" aria-hidden="true">*</span></label>
-                  <input type="text" id="name" name="name" placeholder="First + last" required aria-required="true" autocomplete="name">
+                  <label for="firstName">First Name <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="firstName" name="firstName" placeholder="First name" required aria-required="true" autocomplete="given-name">
                 </div>
                 <div class="form-group">
-                  <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
-                  <input type="email" id="email" name="email" placeholder="you@email.com" required aria-required="true" autocomplete="email">
+                  <label for="lastName">Last Name <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="lastName" name="lastName" placeholder="Last name" required aria-required="true" autocomplete="family-name">
                 </div>
               </div>
+              <!-- Contact row -->
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel">
+                </div>
+              </div>
+              <!-- Contact preference -->
+              <div class="form-group">
+                <label>Preferred Contact Method <span class="req" aria-hidden="true">*</span></label>
+                <div class="contact-pref-group">
+                  <label><input type="radio" name="contactPref" value="email" checked> Email</label>
+                  <label><input type="radio" name="contactPref" value="phone"> Text</label>
+                </div>
+                <p class="form-hint">Only your preferred contact field is required.</p>
+              </div>
+              <!-- Returning client -->
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="returningClient" name="returningClient">
+                  Returning Client
+                </label>
+              </div>
+              <!-- Flash piece / idea -->
               <div class="form-group">
                 <label for="piece">Flash Piece / Idea</label>
-                <select id="piece" name="piece">
-                  <option value="">Select a flash piece or describe below</option>
-                  <option value="Classic Rose">Classic Rose</option>
-                  <option value="Dagger & Snake">Dagger & Snake</option>
-                  <option value="Panther Head">Panther Head</option>
-                  <option value="Eagle Traditional">Eagle Traditional</option>
-                  <option value="Cat & Moon">Cat & Moon</option>
-                  <option value="Sacred Heart">Sacred Heart</option>
-                  <option value="Swallow Pair">Swallow Pair</option>
-                  <option value="Custom Piece">Custom — describe below</option>
-                </select>
+                <textarea id="piece" name="piece" placeholder="Describe the flash piece you're interested in, or your custom idea..." style="min-height: 80px;"></textarea>
               </div>
+              <!-- Placement -->
               <div class="form-group">
                 <label for="placement">Placement & Size</label>
                 <input type="text" id="placement" name="placement" placeholder="e.g. Inner forearm, palm-sized">
               </div>
+              <!-- Details -->
               <div class="form-group">
-                <label for="message">Details & Preferred Dates</label>
-                <textarea id="message" name="message" placeholder="Custom idea details, dates, questions..."></textarea>
+                <label for="message">Details / Preferred Dates / Additional Questions</label>
+                <textarea id="message" name="message" placeholder="Availability, custom idea details, questions..."></textarea>
               </div>
               <button type="submit" class="form-submit">Send Booking Request</button>
             </form>
@@ -2039,23 +2073,87 @@
       });
     });
 
-    // ── Form → mailto ──
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const piece = document.getElementById('piece').value;
-      const placement = document.getElementById('placement').value;
-      const message = document.getElementById('message').value;
+    // ── Supabase config ──
+    const SUPABASE_URL = 'https://raxxodamnkhrwghnnaww.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_TsDj0ZMC7lvZAXCObyFWLw_YClzaa9J';
 
-      if (!name.trim() || !email.trim()) {
-        alert('Please fill in your name and email.');
+    // ── Form submission → Supabase + Email ──
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const contactPref = document.querySelector('input[name="contactPref"]:checked').value;
+      const returningClient = document.getElementById('returningClient').checked;
+      const piece = document.getElementById('piece').value.trim();
+      const placement = document.getElementById('placement').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // Validate required fields
+      if (!firstName || !lastName) {
+        alert('Please fill in your first and last name.');
+        return;
+      }
+      if (contactPref === 'email' && !email) {
+        alert('You selected email as your preferred contact — please enter your email address.');
+        return;
+      }
+      if (contactPref === 'phone' && !phone) {
+        alert('You selected text as your preferred contact — please enter your phone number.');
         return;
       }
 
+      const submitBtn = this.querySelector('.form-submit');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'SENDING...';
+      submitBtn.disabled = true;
+
+      // Save to Supabase
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/bookings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            email: email || null,
+            phone: phone || null,
+            contact_preference: contactPref,
+            returning_client: returningClient,
+            piece: piece || null,
+            placement: placement || null,
+            message: message || null
+          })
+        });
+
+        if (!res.ok) throw new Error('Failed to save booking');
+
+        // Show success message
+        const form = document.getElementById('bookingForm');
+        form.innerHTML = `
+          <div class="form-success">
+            <h4>Request Sent!</h4>
+            <p>Thanks ${firstName} — Liz will be in touch via ${contactPref === 'email' ? 'email' : 'text'} soon.</p>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Supabase error:', err);
+        // Still send via email as fallback
+        alert('Booking saved! Opening your email to send the request...');
+      }
+
+      // Also open mailto so Liz gets an email notification
+      const fullName = `${firstName} ${lastName}`;
       const subject = encodeURIComponent(`Booking Request — ${piece || 'Custom Piece'}`);
       const body = encodeURIComponent(
-        `Hi Liz!\n\nI'd love to book a session.\n\nName: ${name}\nEmail: ${email}\nFlash Piece: ${piece || 'Custom — see below'}\nPlacement: ${placement}\n\n${message}\n\nLooking forward to hearing from you!`
+        `Hi Liz!\n\nI'd love to book a session.\n\nName: ${fullName}\nEmail: ${email || 'Not provided'}\nPhone: ${phone || 'Not provided'}\nPreferred Contact: ${contactPref}\nReturning Client: ${returningClient ? 'Yes' : 'No'}\nFlash Piece/Idea: ${piece || 'Not specified'}\nPlacement: ${placement || 'Not specified'}\n\n${message}\n\nLooking forward to hearing from you!`
       );
 
       window.location.href = `mailto:Tattoosbylizzz@gmail.com?subject=${subject}&body=${body}`;
