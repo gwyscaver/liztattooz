@@ -1214,7 +1214,11 @@
       box-shadow: 0 0 0 1px var(--olive-glow);
     }
 
-    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-group textarea { resize: vertical; min-height: 0; height: auto; scrollbar-width: thin; scrollbar-color: var(--olive) transparent; }
+    .form-group textarea::-webkit-scrollbar { width: 10px; }
+    .form-group textarea::-webkit-scrollbar-track { background: transparent; }
+    .form-group textarea::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 5px; }
+    .form-group textarea::-webkit-scrollbar-thumb:hover { background: var(--olive-bright); }
     .form-group select { color: var(--warm-gray); }
     .form-group select option { background: var(--dark); color: var(--cream); }
 
@@ -1639,17 +1643,17 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-image-wrap img-reveal">
-          <img src="eduardo-vaccari-K-AYEQtf5-w-unsplash (1).jpg" alt="Close-up of bold American Traditional tattoos on an arm">
+          <img src="sardines.jpeg" alt="American Traditional sardine tin tattoo on a forearm">
           <div class="about-image-frame"></div>
         </div>
         <div>
           <p class="section-label reveal">The Artist</p>
           <h2 class="about-heading reveal reveal-delay-1">Rooted in <em>tradition,</em><br>drawn by hand.</h2>
           <p class="about-text reveal reveal-delay-2">
-            Liz creates fun, bold, clean American Traditional work that honors the roots of the craft. Adding a twist to the tradition, everything is hand-drawn with intention — thick outlines, saturated color, and imagery that stands the test of time.
+            I create fun, bold, clean American Traditional work that honors the roots of the craft. Adding a twist to the tradition, everything is hand-drawn with intention — thick outlines, saturated color, and imagery that stands the test of time.
           </p>
           <p class="about-text reveal reveal-delay-2">
-            Based in the Signature Studio (cats not yet permitted, despite repeated negotiations), Liz pulls from vintage editorial and old-school graphic design to give every piece a sharp, considered aesthetic with a personality all its own.
+            Based in the Signature Studio (cats not yet permitted, despite repeated negotiations), I pull from vintage editorial and old-school graphic design to give every piece a sharp, considered aesthetic with a personality all its own.
           </p>
           <div class="about-divider reveal reveal-delay-3"></div>
           <p class="about-pull-quote reveal reveal-delay-3">
@@ -1709,7 +1713,7 @@
         <span>Walk-Ins by Luck</span><div class="marquee-dot"></div>
         <span>Liztattooz</span><div class="marquee-dot"></div>
         <span>Ink with Intention</span><div class="marquee-dot"></div>
-        <span>All Killer</span><div class="marquee-dot"></div>
+        <span>No Regerts</span><div class="marquee-dot"></div>
       </div>
       <div class="marquee-item">
         <span>Flash Available</span><div class="marquee-dot"></div>
@@ -1718,7 +1722,7 @@
         <span>Walk-Ins by Luck</span><div class="marquee-dot"></div>
         <span>Liztattooz</span><div class="marquee-dot"></div>
         <span>Ink with Intention</span><div class="marquee-dot"></div>
-        <span>All Killer</span><div class="marquee-dot"></div>
+        <span>No Regerts</span><div class="marquee-dot"></div>
       </div>
     </div>
   </div>
@@ -1819,15 +1823,6 @@
                   <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel">
                 </div>
               </div>
-              <!-- Contact preference -->
-              <div class="form-group">
-                <label>Preferred Contact Method <span class="req" aria-hidden="true">*</span></label>
-                <div class="contact-pref-group">
-                  <label><input type="radio" name="contactPref" value="email" checked> Email</label>
-                  <label><input type="radio" name="contactPref" value="phone"> Text</label>
-                </div>
-                <p class="form-hint">Only your preferred contact field is required.</p>
-              </div>
               <!-- Returning client -->
               <div class="form-group">
                 <label class="checkbox-label">
@@ -1838,7 +1833,7 @@
               <!-- Flash piece / idea -->
               <div class="form-group">
                 <label for="piece">Flash Piece / Idea</label>
-                <textarea id="piece" name="piece" placeholder="Describe the flash piece you're interested in, or your custom idea..." style="min-height: 80px;"></textarea>
+                <textarea id="piece" name="piece" rows="1" placeholder="Describe the flash piece you're interested in, or your custom idea..."></textarea>
               </div>
               <!-- Reference image upload -->
               <div class="form-group">
@@ -1861,7 +1856,7 @@
               <!-- Details -->
               <div class="form-group">
                 <label for="message">Details / Preferred Dates / Additional Questions</label>
-                <textarea id="message" name="message" placeholder="Availability, custom idea details, questions..."></textarea>
+                <textarea id="message" name="message" rows="1" placeholder="Availability, custom idea details, questions..."></textarea>
               </div>
               <button type="submit" class="form-submit">Send Booking Request</button>
             </form>
@@ -2184,7 +2179,8 @@
       const lastName = document.getElementById('lastName').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      const contactPref = document.querySelector('input[name="contactPref"]:checked').value;
+      // Preferred contact is whichever field they fill (email takes priority if both)
+      const contactPref = email ? 'email' : (phone ? 'phone' : '');
       const returningClient = document.getElementById('returningClient').checked;
       const piece = document.getElementById('piece').value.trim();
       const placement = document.getElementById('placement').value.trim();
@@ -2197,12 +2193,8 @@
         alert('Please fill in your first and last name.');
         return;
       }
-      if (contactPref === 'email' && !email) {
-        alert('You selected email as your preferred contact — please enter your email address.');
-        return;
-      }
-      if (contactPref === 'phone' && !phone) {
-        alert('You selected text as your preferred contact — please enter your phone number.');
+      if (!email && !phone) {
+        alert('Please enter an email address or a phone number so Liz can reach you.');
         return;
       }
 
