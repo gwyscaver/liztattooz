@@ -816,32 +816,44 @@
       opacity: 0.5;
     }
 
-    /* ── Studio Originals strip (Liz's uploads, below the IG feed) ── */
-    .portfolio-block {
-      margin-top: 64px;
-    }
+    /* ── Liz's own uploads — square thumbnails sized like the IG carousel above ── */
+    .portfolio-block { margin-top: 24px; }
     .portfolio-block[hidden] { display: none; }
-    .portfolio-divider-label {
-      text-align: center;
-      font-size: 0.7rem;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      color: var(--olive-bright);
-      margin-bottom: 40px;
+    .pf-row {
+      display: flex;
+      gap: 16px;
+      padding: 4px 48px 10px;
+      overflow-x: auto;
+      justify-content: safe center;          /* centered when few, scrolls when many */
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--olive) transparent;
+    }
+    .pf-row::-webkit-scrollbar { height: 8px; }
+    .pf-row::-webkit-scrollbar-track { background: transparent; }
+    .pf-row::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 4px; }
+    .pf-card {
+      flex: 0 0 auto;
+      width: 220px;                           /* ~matches curator desktop minWidth 200 */
+      background: var(--dark-card);
+      overflow: hidden;
       position: relative;
+      scroll-snap-align: center;
     }
-    .portfolio-divider-label::before,
-    .portfolio-divider-label::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 48px;
-      height: 1px;
-      background: var(--dark-border);
+    .pf-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;                    /* square, like the IG grid */
+      object-fit: cover;
+      filter: brightness(0.85);
+      transition: filter 0.45s ease, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    .portfolio-divider-label::before { right: calc(50% + 90px); }
-    .portfolio-divider-label::after { left: calc(50% + 90px); }
-    .portfolio-block .flash-track-wrapper { padding-bottom: 40px; }
+    .pf-card:hover img { filter: brightness(1); transform: scale(1.05); }
+    @media (max-width: 768px) {
+      .pf-row { padding: 4px 24px 10px; gap: 12px; }
+      .pf-card { width: 150px; }              /* ~matches curator gridMobileMinWidth 150 */
+    }
 
     /* ── Running Marquee ── */
     .marquee-strip {
@@ -1727,12 +1739,9 @@
     <div class="curator-feed-wrapper" style="max-width: 1300px; margin: 0 auto; padding: 0 48px;">
       <div id="curator-feed-gallery1"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
     </div>
-    <!-- Studio Originals — Liz's own uploaded artwork (Supabase-backed, separate from the IG feed above) -->
+    <!-- Liz's own uploaded artwork (Supabase-backed); sits with the IG carousel under Flash & Portfolio -->
     <div id="portfolioBlock" class="portfolio-block" hidden>
-      <p class="portfolio-divider-label">Studio Originals</p>
-      <div class="flash-track-wrapper">
-        <div class="flash-track" id="flashTrack"></div>
-      </div>
+      <div class="pf-row" id="pfRow"></div>
     </div>
     <div class="section-scroll"><div class="scroll-icon"></div></div>
   </section>
@@ -2188,11 +2197,11 @@
     const SUPABASE_URL = 'https://raxxodamnkhrwghnnaww.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_TsDj0ZMC7lvZAXCObyFWLw_YClzaa9J';
 
-    // ── Studio Originals: load Liz's uploaded artwork into the strip below the IG feed ──
+    // ── Load Liz's uploaded artwork into the square thumbnail strip (Flash & Portfolio) ──
     (async function loadPortfolio() {
       const block = document.getElementById('portfolioBlock');
-      const track = document.getElementById('flashTrack');
-      if (!block || !track) return;
+      const row = document.getElementById('pfRow');
+      if (!block || !row) return;
       const safeImgUrl = (u) => {
         try {
           const url = new URL(u, SUPABASE_URL);
@@ -2211,37 +2220,23 @@
         rows.forEach(r => {
           const href = safeImgUrl(r.image_url);
           if (!href) return; // skip anything that isn't a real http(s) image URL
-          const card = document.createElement('div');
-          card.className = 'flash-card card-visible';
+          const card = document.createElement('a');
+          card.className = 'pf-card';
+          card.href = href;
+          card.target = '_blank';
+          card.rel = 'noopener';
 
-          const link = document.createElement('a');
-          link.href = href;
-          link.target = '_blank';
-          link.rel = 'noopener';
-
-          const imgWrap = document.createElement('div');
-          imgWrap.className = 'flash-card-image';
           const img = document.createElement('img');
           img.src = href;
           img.loading = 'lazy';
           img.alt = (r.caption && String(r.caption)) || 'Tattoo artwork by Liz';
-          imgWrap.appendChild(img);
-          link.appendChild(imgWrap);
-
-          if (r.caption) {
-            const info = document.createElement('div');
-            info.className = 'flash-card-info';
-            const h4 = document.createElement('h4');
-            h4.textContent = String(r.caption);
-            info.appendChild(h4);
-            link.appendChild(info);
-          }
-          card.appendChild(link);
+          if (r.caption) card.title = String(r.caption);
+          card.appendChild(img);
           frag.appendChild(card);
         });
 
         if (!frag.childNodes.length) return;
-        track.appendChild(frag);
+        row.appendChild(frag);
         block.hidden = false;
       } catch (err) {
         console.error('Portfolio load error:', err);
