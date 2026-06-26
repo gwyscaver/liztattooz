@@ -821,7 +821,7 @@
     .portfolio-block[hidden] { display: none; }
     .pf-row {
       display: flex;
-      gap: 16px;
+      gap: 0;                                /* mirror curator's horizontalSpacing: 0 */
       padding: 4px 48px 10px;
       overflow-x: auto;
       justify-content: safe center;          /* centered when few, scrolls when many */
@@ -851,7 +851,7 @@
     }
     .pf-card:hover img { filter: brightness(1); transform: scale(1.05); }
     @media (max-width: 768px) {
-      .pf-row { padding: 4px 24px 10px; gap: 12px; }
+      .pf-row { padding: 4px 24px 10px; gap: 0; }
       .pf-card { width: 150px; }              /* ~matches curator gridMobileMinWidth 150 */
     }
 
