@@ -819,20 +819,23 @@
     /* ── Liz's own uploads — square thumbnails sized like the IG carousel above ── */
     .portfolio-block { margin-top: 24px; }
     .portfolio-block[hidden] { display: none; }
-    .pf-row {
-      display: flex;
-      gap: 0;                                /* mirror curator's horizontalSpacing: 0 */
-      padding: 4px 48px 10px;
+    .pf-scroll {                              /* the horizontal scroll viewport */
       overflow-x: auto;
-      justify-content: safe center;          /* centered when few, scrolls when many */
-      scroll-snap-type: x proximity;
       -webkit-overflow-scrolling: touch;
+      padding: 4px 48px 10px;
+      scroll-snap-type: x proximity;
       scrollbar-width: thin;
       scrollbar-color: var(--olive) transparent;
     }
-    .pf-row::-webkit-scrollbar { height: 8px; }
-    .pf-row::-webkit-scrollbar-track { background: transparent; }
-    .pf-row::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 4px; }
+    .pf-scroll::-webkit-scrollbar { height: 8px; }
+    .pf-scroll::-webkit-scrollbar-track { background: transparent; }
+    .pf-scroll::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 4px; }
+    .pf-track {
+      display: inline-flex;
+      gap: 0;                                 /* mirror curator's horizontalSpacing: 0 */
+      min-width: 100%;                        /* centers when few; grows + scrolls when many */
+      justify-content: center;
+    }
     .pf-card {
       flex: 0 0 auto;
       width: 220px;                           /* ~matches curator desktop minWidth 200 */
@@ -851,7 +854,7 @@
     }
     .pf-card:hover img { filter: brightness(1); transform: scale(1.05); }
     @media (max-width: 768px) {
-      .pf-row { padding: 4px 24px 10px; gap: 0; }
+      .pf-scroll { padding: 4px 24px 10px; }
       .pf-card { width: 150px; }              /* ~matches curator gridMobileMinWidth 150 */
     }
 
@@ -1741,7 +1744,9 @@
     </div>
     <!-- Liz's own uploaded artwork (Supabase-backed); sits with the IG carousel under Flash & Portfolio -->
     <div id="portfolioBlock" class="portfolio-block" hidden>
-      <div class="pf-row" id="pfRow"></div>
+      <div class="pf-scroll">
+        <div class="pf-track" id="pfRow"></div>
+      </div>
     </div>
     <div class="section-scroll"><div class="scroll-icon"></div></div>
   </section>
