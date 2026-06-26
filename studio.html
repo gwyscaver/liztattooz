@@ -119,6 +119,8 @@
     const SUPABASE_KEY = 'sb_publishable_TsDj0ZMC7lvZAXCObyFWLw_YClzaa9J';
     const ALLOWED_EMAIL = 'tattoosbylizzz@gmail.com';
     const BUCKET = 'portfolio';
+    // Private entry key — Liz's bookmark is  /studio.html#key=THIS  (change here to rotate it)
+    const ACCESS_KEY = 'lz9k3mq7px';
 
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
       auth: { detectSessionInUrl: true, persistSession: true, flowType: 'implicit' }
@@ -127,6 +129,17 @@
     const $ = (id) => document.getElementById(id);
     const show = (el) => el.classList.remove('hidden');
     const hide = (el) => el.classList.add('hidden');
+
+    // Does the URL carry Liz's private entry key?
+    function hasAccessKey() {
+      const fromHash = new URLSearchParams(location.hash.replace(/^#/, '')).get('key');
+      const fromQuery = new URLSearchParams(location.search).get('key');
+      return fromHash === ACCESS_KEY || fromQuery === ACCESS_KEY;
+    }
+    // Is this page load a magic-link sign-in returning with tokens?
+    function isAuthReturn() {
+      return location.hash.includes('access_token') || /[?&]code=/.test(location.search);
+    }
 
     function setStatus(el, msg, kind) {
       el.textContent = msg;
@@ -153,21 +166,43 @@
       location.reload();
     });
 
+    function enterDashboard(session) {
+      hide($('loadingCard')); hide($('loginCard'));
+      $('whoami').textContent = session.user.email;
+      show($('appCard'));
+      loadList();
+    }
+
+    // Reveal the dashboard the moment a valid Liz session lands (covers magic-link return)
+    sb.auth.onAuthStateChange((event, session) => {
+      const email = session?.user?.email?.toLowerCase();
+      if (session && email === ALLOWED_EMAIL) enterDashboard(session);
+    });
+
     async function init() {
       const { data: { session } } = await sb.auth.getSession();
-      hide($('loadingCard'));
       const email = session?.user?.email?.toLowerCase();
-      if (session && email === ALLOWED_EMAIL) {
-        $('whoami').textContent = session.user.email;
-        show($('appCard'));
-        loadList();
-      } else if (session && email !== ALLOWED_EMAIL) {
-        // Someone else signed in — not authorized to upload
-        await sb.auth.signOut();
+
+      // Already signed in as Liz → straight to the dashboard
+      if (session && email === ALLOWED_EMAIL) { enterDashboard(session); return; }
+
+      // Signed in as someone else → not authorized; drop the session
+      if (session && email !== ALLOWED_EMAIL) { await sb.auth.signOut(); }
+
+      hide($('loadingCard'));
+
+      if (hasAccessKey()) {
+        // Liz's private bookmark → show the sign-in form
         show($('loginCard'));
-        setStatus($('loginStatus'), 'That account is not authorized for uploads.', 'err');
+        if (session && email !== ALLOWED_EMAIL) {
+          setStatus($('loginStatus'), 'That account is not authorized. Use ' + ALLOWED_EMAIL + '.', 'err');
+        }
+      } else if (isAuthReturn()) {
+        // Magic-link tokens are still settling; wait for onAuthStateChange
+        show($('loadingCard'));
       } else {
-        show($('loginCard'));
+        // Anyone else (public) never sees a login box — bounce to the homepage
+        location.replace('/');
       }
     }
 
