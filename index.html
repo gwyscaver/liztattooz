@@ -816,6 +816,33 @@
       opacity: 0.5;
     }
 
+    /* ── Studio Originals strip (Liz's uploads, below the IG feed) ── */
+    .portfolio-block {
+      margin-top: 64px;
+    }
+    .portfolio-block[hidden] { display: none; }
+    .portfolio-divider-label {
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--olive-bright);
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .portfolio-divider-label::before,
+    .portfolio-divider-label::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 48px;
+      height: 1px;
+      background: var(--dark-border);
+    }
+    .portfolio-divider-label::before { right: calc(50% + 90px); }
+    .portfolio-divider-label::after { left: calc(50% + 90px); }
+    .portfolio-block .flash-track-wrapper { padding-bottom: 40px; }
+
     /* ── Running Marquee ── */
     .marquee-strip {
       padding: 32px 0;
@@ -1700,6 +1727,13 @@
     <div class="curator-feed-wrapper" style="max-width: 1300px; margin: 0 auto; padding: 0 48px;">
       <div id="curator-feed-gallery1"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
     </div>
+    <!-- Studio Originals — Liz's own uploaded artwork (Supabase-backed, separate from the IG feed above) -->
+    <div id="portfolioBlock" class="portfolio-block" hidden>
+      <p class="portfolio-divider-label">Studio Originals</p>
+      <div class="flash-track-wrapper">
+        <div class="flash-track" id="flashTrack"></div>
+      </div>
+    </div>
     <div class="section-scroll"><div class="scroll-icon"></div></div>
   </section>
 
@@ -2153,6 +2187,66 @@
     // ── Supabase config ──
     const SUPABASE_URL = 'https://raxxodamnkhrwghnnaww.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_TsDj0ZMC7lvZAXCObyFWLw_YClzaa9J';
+
+    // ── Studio Originals: load Liz's uploaded artwork into the strip below the IG feed ──
+    (async function loadPortfolio() {
+      const block = document.getElementById('portfolioBlock');
+      const track = document.getElementById('flashTrack');
+      if (!block || !track) return;
+      const safeImgUrl = (u) => {
+        try {
+          const url = new URL(u, SUPABASE_URL);
+          return (url.protocol === 'https:' || url.protocol === 'http:') ? url.href : null;
+        } catch { return null; }
+      };
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/portfolio?select=image_url,caption&order=sort_order.asc,created_at.desc`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+        });
+        if (!res.ok) return;
+        const rows = await res.json();
+        if (!Array.isArray(rows) || rows.length === 0) return; // keep strip hidden when empty
+
+        const frag = document.createDocumentFragment();
+        rows.forEach(r => {
+          const href = safeImgUrl(r.image_url);
+          if (!href) return; // skip anything that isn't a real http(s) image URL
+          const card = document.createElement('div');
+          card.className = 'flash-card card-visible';
+
+          const link = document.createElement('a');
+          link.href = href;
+          link.target = '_blank';
+          link.rel = 'noopener';
+
+          const imgWrap = document.createElement('div');
+          imgWrap.className = 'flash-card-image';
+          const img = document.createElement('img');
+          img.src = href;
+          img.loading = 'lazy';
+          img.alt = (r.caption && String(r.caption)) || 'Tattoo artwork by Liz';
+          imgWrap.appendChild(img);
+          link.appendChild(imgWrap);
+
+          if (r.caption) {
+            const info = document.createElement('div');
+            info.className = 'flash-card-info';
+            const h4 = document.createElement('h4');
+            h4.textContent = String(r.caption);
+            info.appendChild(h4);
+            link.appendChild(info);
+          }
+          card.appendChild(link);
+          frag.appendChild(card);
+        });
+
+        if (!frag.childNodes.length) return;
+        track.appendChild(frag);
+        block.hidden = false;
+      } catch (err) {
+        console.error('Portfolio load error:', err);
+      }
+    })();
 
     // ── File upload display ──
     document.getElementById('refImage').addEventListener('change', function() {

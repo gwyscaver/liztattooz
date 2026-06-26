@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Studio Originals — Upload · Liztattooz</title>
+  <style>
+    :root {
+      --dark: #0d1612; --dark-card: #131f1a; --dark-border: #26352d;
+      --cream: #e8e4df; --warm-gray: #9aa39b; --olive: #6B7F56;
+      --olive-bright: #8aa06d; --black: #0a0f0c; --white: #f4f2ee;
+      --danger: #b4543f;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--dark); color: var(--cream);
+      min-height: 100vh; padding: 32px 20px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-family: 'Bodoni Moda', Georgia, serif;
+      font-size: 1.8rem; font-weight: 700; color: var(--white); margin-bottom: 6px;
+    }
+    .sub { font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--olive-bright); margin-bottom: 32px; }
+    .card { background: var(--dark-card); border: 1px solid var(--dark-border); padding: 28px; margin-bottom: 24px; }
+    label { display: block; font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 8px; }
+    input[type=email], input[type=text] {
+      width: 100%; padding: 14px 16px; background: var(--dark); border: 1px solid var(--dark-border);
+      color: var(--cream); font-size: 0.95rem; font-family: inherit; outline: none; margin-bottom: 18px;
+    }
+    input:focus { border-color: var(--olive); }
+    button {
+      background: var(--olive); color: var(--black); border: none; padding: 14px 24px;
+      font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: background 0.3s;
+    }
+    button:hover { background: var(--olive-bright); }
+    button:disabled { opacity: 0.5; cursor: default; }
+    button.ghost { background: transparent; border: 1px solid var(--dark-border); color: var(--warm-gray); }
+    button.ghost:hover { border-color: var(--olive); color: var(--cream); background: transparent; }
+    button.danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 14px; letter-spacing: 1px; }
+    button.danger:hover { background: var(--danger); color: var(--white); }
+    button.mini { padding: 6px 11px; letter-spacing: 1px; font-size: 0.8rem; }
+    .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .hint { font-size: 0.8rem; color: var(--warm-gray); line-height: 1.5; margin-top: 4px; }
+    .status { font-size: 0.85rem; margin-top: 14px; min-height: 1.2em; }
+    .status.ok { color: var(--olive-bright); }
+    .status.err { color: var(--danger); }
+    .hidden { display: none !important; }
+    .file-drop {
+      border: 1px dashed var(--dark-border); padding: 22px; text-align: center; margin-bottom: 18px; cursor: pointer;
+    }
+    .file-drop:hover { border-color: var(--olive); }
+    .item { display: flex; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--dark-border); }
+    .item:last-child { border-bottom: none; }
+    .item img { width: 64px; height: 80px; object-fit: cover; flex: 0 0 auto; background: var(--dark); }
+    .item-meta { flex: 1; min-width: 0; }
+    .item-meta .cap { color: var(--cream); font-size: 0.9rem; margin-bottom: 2px; word-break: break-word; }
+    .item-meta .date { color: var(--warm-gray); font-size: 0.72rem; }
+    .item-actions { display: flex; gap: 6px; flex: 0 0 auto; }
+    .signed-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 0.82rem; color: var(--warm-gray); }
+    .empty { color: var(--warm-gray); font-size: 0.9rem; padding: 8px 0; }
+    a.back { color: var(--olive-bright); font-size: 0.8rem; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Studio Originals</h1>
+    <p class="sub">Liztattooz · Portfolio Uploads</p>
+
+    <!-- LOGIN -->
+    <div id="loginCard" class="card hidden">
+      <label for="loginEmail">Your email</label>
+      <input type="email" id="loginEmail" value="Tattoosbylizzz@gmail.com" autocomplete="email">
+      <button id="sendLinkBtn">Send me a sign-in link</button>
+      <p class="hint">We'll email you a one-tap sign-in link — no password needed. Open it on this device.</p>
+      <p id="loginStatus" class="status"></p>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loadingCard" class="card">
+      <p class="hint">Loading…</p>
+    </div>
+
+    <!-- APP (signed in) -->
+    <div id="appCard" class="hidden">
+      <div class="signed-row">
+        <span>Signed in as <strong id="whoami"></strong></span>
+        <button class="ghost mini" id="signOutBtn">Sign out</button>
+      </div>
+
+      <div class="card">
+        <label>Add a photo</label>
+        <div class="file-drop" id="fileDrop">
+          <span id="fileLabel">Tap to choose a photo of your artwork</span>
+          <input type="file" id="fileInput" accept="image/*" class="hidden">
+        </div>
+        <label for="captionInput">Caption (optional)</label>
+        <input type="text" id="captionInput" placeholder="e.g. Sardine tin, fine line — 2026" maxlength="120">
+        <button id="uploadBtn" disabled>Upload to gallery</button>
+        <p id="uploadStatus" class="status"></p>
+      </div>
+
+      <div class="card">
+        <label>Current gallery <span id="countLabel" style="color:var(--olive-bright)"></span></label>
+        <p class="hint" style="margin-bottom:14px">Use ↑ / ↓ to reorder how they appear on the site (top = shown first).</p>
+        <div id="list"></div>
+      </div>
+
+      <a class="back" href="/">← Back to site</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://raxxodamnkhrwghnnaww.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_TsDj0ZMC7lvZAXCObyFWLw_YClzaa9J';
+    const ALLOWED_EMAIL = 'tattoosbylizzz@gmail.com';
+    const BUCKET = 'portfolio';
+
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { detectSessionInUrl: true, persistSession: true, flowType: 'implicit' }
+    });
+
+    const $ = (id) => document.getElementById(id);
+    const show = (el) => el.classList.remove('hidden');
+    const hide = (el) => el.classList.add('hidden');
+
+    function setStatus(el, msg, kind) {
+      el.textContent = msg;
+      el.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    // ── Auth ──
+    $('sendLinkBtn').addEventListener('click', async () => {
+      const email = $('loginEmail').value.trim();
+      if (!email) { setStatus($('loginStatus'), 'Enter your email first.', 'err'); return; }
+      $('sendLinkBtn').disabled = true;
+      setStatus($('loginStatus'), 'Sending…');
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: location.origin + location.pathname, shouldCreateUser: true }
+      });
+      $('sendLinkBtn').disabled = false;
+      if (error) { setStatus($('loginStatus'), error.message, 'err'); return; }
+      setStatus($('loginStatus'), 'Check your email and tap the sign-in link. You can close this tab.', 'ok');
+    });
+
+    $('signOutBtn').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      location.reload();
+    });
+
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      hide($('loadingCard'));
+      const email = session?.user?.email?.toLowerCase();
+      if (session && email === ALLOWED_EMAIL) {
+        $('whoami').textContent = session.user.email;
+        show($('appCard'));
+        loadList();
+      } else if (session && email !== ALLOWED_EMAIL) {
+        // Someone else signed in — not authorized to upload
+        await sb.auth.signOut();
+        show($('loginCard'));
+        setStatus($('loginStatus'), 'That account is not authorized for uploads.', 'err');
+      } else {
+        show($('loginCard'));
+      }
+    }
+
+    // ── Upload ──
+    let chosenFile = null;
+    $('fileDrop').addEventListener('click', () => $('fileInput').click());
+    $('fileInput').addEventListener('change', function () {
+      chosenFile = this.files[0] || null;
+      if (chosenFile) {
+        if (chosenFile.size > 10 * 1024 * 1024) {
+          setStatus($('uploadStatus'), 'Image is over 10MB — please pick a smaller one.', 'err');
+          chosenFile = null; $('uploadBtn').disabled = true; return;
+        }
+        $('fileLabel').textContent = chosenFile.name;
+        $('uploadBtn').disabled = false;
+        setStatus($('uploadStatus'), '');
+      }
+    });
+
+    $('uploadBtn').addEventListener('click', async () => {
+      if (!chosenFile) return;
+      $('uploadBtn').disabled = true;
+      setStatus($('uploadStatus'), 'Uploading…');
+      try {
+        const safe = chosenFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const path = Date.now() + '_' + safe;
+        const { error: upErr } = await sb.storage.from(BUCKET).upload(path, chosenFile, { contentType: chosenFile.type, upsert: false });
+        if (upErr) throw upErr;
+        const { data: pub } = sb.storage.from(BUCKET).getPublicUrl(path);
+        // New uploads go to the top: give the lowest sort_order
+        const { data: minRow } = await sb.from('portfolio').select('sort_order').order('sort_order', { ascending: true }).limit(1);
+        const nextOrder = (minRow && minRow.length ? minRow[0].sort_order : 0) - 1;
+        const { error: insErr } = await sb.from('portfolio').insert({
+          image_url: pub.publicUrl,
+          caption: $('captionInput').value.trim() || null,
+          sort_order: nextOrder
+        });
+        if (insErr) throw insErr;
+        setStatus($('uploadStatus'), 'Added to the gallery ✓', 'ok');
+        chosenFile = null;
+        $('fileInput').value = '';
+        $('fileLabel').textContent = 'Tap to choose a photo of your artwork';
+        $('captionInput').value = '';
+        loadList();
+      } catch (err) {
+        setStatus($('uploadStatus'), err.message || 'Upload failed.', 'err');
+        $('uploadBtn').disabled = false;
+      }
+    });
+
+    // ── List / delete / reorder ──
+    let items = [];
+    async function loadList() {
+      const { data, error } = await sb.from('portfolio')
+        .select('id, image_url, caption, created_at, sort_order')
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+      if (error) { $('list').replaceChildren(); $('list').textContent = error.message; return; }
+      items = data || [];
+      render();
+    }
+
+    function render() {
+      const list = $('list');
+      list.replaceChildren();
+      $('countLabel').textContent = items.length ? '(' + items.length + ')' : '';
+      if (!items.length) {
+        const p = document.createElement('p');
+        p.className = 'empty';
+        p.textContent = 'No photos yet. Upload your first piece above.';
+        list.appendChild(p);
+        return;
+      }
+      items.forEach((it, i) => {
+        const row = document.createElement('div');
+        row.className = 'item';
+
+        const img = document.createElement('img');
+        img.src = it.image_url; img.alt = it.caption || 'artwork'; img.loading = 'lazy';
+        row.appendChild(img);
+
+        const meta = document.createElement('div');
+        meta.className = 'item-meta';
+        const cap = document.createElement('div');
+        cap.className = 'cap';
+        cap.textContent = it.caption || '(no caption)';
+        const date = document.createElement('div');
+        date.className = 'date';
+        date.textContent = new Date(it.created_at).toLocaleDateString();
+        meta.appendChild(cap); meta.appendChild(date);
+        row.appendChild(meta);
+
+        const actions = document.createElement('div');
+        actions.className = 'item-actions';
+        const up = document.createElement('button');
+        up.className = 'ghost mini'; up.textContent = '↑'; up.disabled = i === 0;
+        up.onclick = () => move(i, -1);
+        const down = document.createElement('button');
+        down.className = 'ghost mini'; down.textContent = '↓'; down.disabled = i === items.length - 1;
+        down.onclick = () => move(i, 1);
+        const del = document.createElement('button');
+        del.className = 'danger'; del.textContent = 'Delete';
+        del.onclick = () => removeItem(it);
+        actions.appendChild(up); actions.appendChild(down); actions.appendChild(del);
+        row.appendChild(actions);
+
+        list.appendChild(row);
+      });
+    }
+
+    async function move(index, dir) {
+      const j = index + dir;
+      if (j < 0 || j >= items.length) return;
+      // swap locally
+      [items[index], items[j]] = [items[j], items[index]];
+      render();
+      // persist new sequential sort_order for all (simple + reliable)
+      await Promise.all(items.map((it, idx) =>
+        sb.from('portfolio').update({ sort_order: idx }).eq('id', it.id)
+      ));
+    }
+
+    async function removeItem(it) {
+      if (!confirm('Remove this photo from the gallery?')) return;
+      try {
+        const { error: delErr } = await sb.from('portfolio').delete().eq('id', it.id);
+        if (delErr) throw delErr;
+        // best-effort remove the stored file too
+        const marker = '/object/public/' + BUCKET + '/';
+        const idx = it.image_url.indexOf(marker);
+        if (idx !== -1) {
+          const path = decodeURIComponent(it.image_url.slice(idx + marker.length));
+          await sb.storage.from(BUCKET).remove([path]);
+        }
+        loadList();
+      } catch (err) {
+        alert(err.message || 'Could not delete.');
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
