@@ -154,7 +154,7 @@
       setStatus($('loginStatus'), 'Sending…');
       const { error } = await sb.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: location.origin + location.pathname, shouldCreateUser: true }
+        options: { emailRedirectTo: location.origin + location.pathname, shouldCreateUser: false }
       });
       $('sendLinkBtn').disabled = false;
       if (error) { setStatus($('loginStatus'), error.message, 'err'); return; }

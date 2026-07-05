@@ -763,122 +763,6 @@
       color: var(--caramel);
     }
 
-    .flash-track-wrapper {
-      position: relative;
-      padding-bottom: 120px;
-    }
-
-    .flash-track {
-      display: flex;
-      gap: 24px;
-      padding: 0 48px;
-      transition: transform 0.05s linear;
-      will-change: transform;
-    }
-
-    .flash-card {
-      flex: 0 0 360px;
-      position: relative;
-      overflow: hidden;
-      background: var(--dark-card);
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .flash-card.card-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .flash-card a {
-      display: block;
-      width: 100%;
-    }
-
-    .flash-card-image {
-      aspect-ratio: 3/4;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .flash-card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(15%) brightness(0.8) sepia(10%);
-      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .flash-card:hover .flash-card-image img {
-      filter: grayscale(0%) brightness(1);
-      transform: scale(1.06);
-    }
-
-    .flash-card-image::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(transparent 50%, rgba(13,22,18,0.85));
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .flash-card:hover .flash-card-image::after { opacity: 1; }
-
-    .flash-card-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 28px 24px;
-      transform: translateY(20px);
-      opacity: 0;
-      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .flash-card:hover .flash-card-info {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .flash-card-info h4 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--white);
-    }
-
-    .flash-card-info p {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--olive-bright);
-    }
-
-    .flash-card-number {
-      position: absolute;
-      top: 20px;
-      left: 24px;
-      font-family: 'Bodoni Moda', serif;
-      font-size: 0.85rem;
-      font-style: italic;
-      color: rgba(200, 168, 122, 0.4);
-      z-index: 2;
-    }
-
-    .flash-drag-hint {
-      text-align: center;
-      padding-top: 40px;
-      font-size: 0.65rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--warm-gray);
-      opacity: 0.5;
-    }
-
     /* ── Liz's own uploads — square thumbnails sized like the IG carousel above ── */
     .portfolio-block { margin-top: 24px; }
     .portfolio-block[hidden] { display: none; }
@@ -1329,32 +1213,6 @@
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-    /* Contact preference radio group */
-    .form-group .contact-pref-group {
-      display: flex;
-      gap: 24px;
-      margin-top: 6px;
-    }
-    .form-group .contact-pref-group label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: none;
-      letter-spacing: 0.5px;
-      font-size: 0.85rem;
-      color: var(--cream);
-      cursor: pointer;
-      margin-bottom: 0;
-    }
-    .form-group .contact-pref-group input[type="radio"] {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--olive);
-      cursor: pointer;
-      -webkit-appearance: auto;
-      padding: 0;
-    }
-
     /* Checkbox styling */
     .form-group .checkbox-label {
       display: flex;
@@ -1584,7 +1442,6 @@
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
       .hero-title .line span { transform: none; transition: none; }
-      .flash-card { opacity: 1; transform: none; transition: none; }
       .cursor, .cursor-dot { display: none; }
       body { cursor: auto; }
       a, button { cursor: auto; }
@@ -1596,7 +1453,6 @@
     @media (max-width: 1024px) {
       .hero-content { padding: 0 48px; }
       .about-grid { grid-template-columns: 1fr; gap: 60px; }
-      .flash-card { flex: 0 0 300px; }
       .insta-grid { grid-template-columns: repeat(3, 1fr); }
       .contact-grid { grid-template-columns: 1fr; gap: 60px; }
       .insta-header { flex-direction: column; align-items: flex-start; gap: 24px; }
@@ -1627,8 +1483,6 @@
       .about-image-frame { display: none; }
 
       .flash { padding: 80px 0 0; }
-      .flash-card { flex: 0 0 280px; }
-      .flash-track { padding: 0 24px; }
 
       .instagram { padding: 80px 0; }
       .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
@@ -1644,7 +1498,6 @@
 
     @media (max-width: 480px) {
       .hero-word-huge { font-size: 2.8rem; letter-spacing: 0.04em; }
-      .flash-card { flex: 0 0 85vw; }
       .insta-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
@@ -1723,7 +1576,7 @@
   <!-- Hero — Center Stage Dramatic -->
   <section class="hero" id="hero" aria-label="Introduction">
     <div class="hero-bg">
-      <img src="james-discombe-06o01CtKjGw-unsplash.jpg" alt="" loading="eager" aria-hidden="true">
+      <img src="hero-bg.webp" alt="" loading="eager" aria-hidden="true">
     </div>
     <div class="hero-content">
       <p class="hero-eyebrow">American Traditional Tattoo</p>
@@ -2095,7 +1948,7 @@
     animateCursor();
 
     // Cursor hover states
-    const hoverTargets = document.querySelectorAll('a, button, .flash-card, input, textarea, select, .form-submit');
+    const hoverTargets = document.querySelectorAll('a, button, input, textarea, select, .form-submit');
     hoverTargets.forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
@@ -2142,82 +1995,6 @@
 
     document.querySelectorAll('.reveal, .img-reveal').forEach(el => revealObserver.observe(el));
 
-    // Flash card stagger reveal (only if gallery exists)
-    const flashWrapper = document.querySelector('.flash-track-wrapper');
-    if (flashWrapper) {
-      const flashObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const cards = document.querySelectorAll('.flash-card');
-            cards.forEach((card, i) => {
-              setTimeout(() => card.classList.add('card-visible'), i * 120);
-            });
-            flashObserver.disconnect();
-          }
-        });
-      }, { threshold: 0.1 });
-      flashObserver.observe(flashWrapper);
-    }
-
-    // ── Horizontal drag gallery (only if the static gallery exists) ──
-    const track = document.getElementById('flashTrack');
-    if (track) {
-    let isDragging = false, startX = 0, scrollLeft = 0, currentTranslate = 0;
-
-    track.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      startX = e.pageX;
-      scrollLeft = currentTranslate;
-      track.style.cursor = 'grabbing';
-      e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const dx = e.pageX - startX;
-      const maxScroll = -(track.scrollWidth - track.parentElement.clientWidth);
-      currentTranslate = Math.max(maxScroll, Math.min(0, scrollLeft + dx));
-      track.style.transform = `translateX(${currentTranslate}px)`;
-    });
-
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      track.style.cursor = '';
-    });
-
-    // Touch support
-    track.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      startX = e.touches[0].pageX;
-      scrollLeft = currentTranslate;
-    }, { passive: true });
-
-    track.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      const dx = e.touches[0].pageX - startX;
-      const maxScroll = -(track.scrollWidth - track.parentElement.clientWidth);
-      currentTranslate = Math.max(maxScroll, Math.min(0, scrollLeft + dx));
-      track.style.transform = `translateX(${currentTranslate}px)`;
-    }, { passive: true });
-
-    track.addEventListener('touchend', () => { isDragging = false; });
-
-    // Keyboard nav for flash gallery
-    const flashSection = document.getElementById('flash');
-    flashSection.setAttribute('tabindex', '0');
-    flashSection.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const step = e.key === 'ArrowRight' ? -320 : 320;
-        const maxScroll = -(track.scrollWidth - track.parentElement.clientWidth);
-        currentTranslate = Math.max(maxScroll, Math.min(0, currentTranslate + step));
-        track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        track.style.transform = `translateX(${currentTranslate}px)`;
-        setTimeout(() => { track.style.transition = 'transform 0.05s linear'; }, 500);
-      }
-    });
-    } // end if (track)
-
     // ── Magnetic button effect ──
     document.querySelectorAll('[data-magnetic]').forEach(btn => {
       btn.addEventListener('mousemove', (e) => {
@@ -2253,7 +2030,13 @@
     // ── Smooth scroll for anchor links ──
     document.querySelectorAll('a[href^="#"]').forEach(link => {
       link.addEventListener('click', (e) => {
-        const target = document.querySelector(link.getAttribute('href'));
+        const href = link.getAttribute('href');
+        if (href === '#') {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+        const target = document.querySelector(href);
         if (target) {
           e.preventDefault();
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2430,12 +2213,14 @@
 
         // Show success message
         const form = document.getElementById('bookingForm');
-        form.innerHTML = `
-          <div class="form-success">
-            <h4>Request Sent!</h4>
-            <p>Thanks ${firstName} — Liz will be in touch via ${contactPref === 'email' ? 'email' : 'text'} soon.</p>
-          </div>
-        `;
+        const success = document.createElement('div');
+        success.className = 'form-success';
+        const h4 = document.createElement('h4');
+        h4.textContent = 'Request Sent!';
+        const p = document.createElement('p');
+        p.textContent = `Thanks ${firstName} — Liz will be in touch via ${contactPref === 'email' ? 'email' : 'text'} soon.`;
+        success.append(h4, p);
+        form.replaceChildren(success);
       } catch (err) {
         console.error('EmailJS error:', err);
         submitBtn.textContent = originalText;
