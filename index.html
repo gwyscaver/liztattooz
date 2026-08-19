@@ -763,6 +763,25 @@
       color: var(--caramel);
     }
 
+    /* ── Curator carousel arrows — brand green instead of Curator's default grey ── */
+    #curator-feed-gallery1 .crt-panel-prev,
+    #curator-feed-gallery1 .crt-panel-next {
+      background-color: var(--olive-glow);          /* rgba olive, translucent at rest */
+      border: 1px solid rgba(143, 168, 116, 0.55);  /* --olive-bright @ 55% */
+      transition: background-color 0.4s ease, border-color 0.4s ease;
+    }
+    #curator-feed-gallery1 .crt-panel-prev:hover,
+    #curator-feed-gallery1 .crt-panel-prev:focus,
+    #curator-feed-gallery1 .crt-panel-next:hover,
+    #curator-feed-gallery1 .crt-panel-next:focus {
+      background-color: var(--olive);
+      border-color: var(--olive-bright);
+    }
+    #curator-feed-gallery1 .crt-panel-prev svg,
+    #curator-feed-gallery1 .crt-panel-next svg {
+      color: var(--cream);
+    }
+
     /* ── Liz's own uploads — square thumbnails sized like the IG carousel above ── */
     .portfolio-block { margin-top: 24px; }
     .portfolio-block[hidden] { display: none; }
