@@ -763,9 +763,12 @@
       color: var(--caramel);
     }
 
-    /* ── Curator carousel arrows — brand green instead of Curator's default grey ── */
+    /* ── Curator carousel arrows (flash gallery + @liztattooz grid) — brand olive
+          instead of Curator's default grey ── */
     #curator-feed-gallery1 .crt-panel-prev,
-    #curator-feed-gallery1 .crt-panel-next {
+    #curator-feed-gallery1 .crt-panel-next,
+    #curator-feed-default-feed-layout .crt-panel-prev,
+    #curator-feed-default-feed-layout .crt-panel-next {
       background-color: var(--olive-glow);          /* rgba olive, translucent at rest */
       border: 1px solid rgba(143, 168, 116, 0.55);  /* --olive-bright @ 55% */
       transition: background-color 0.4s ease, border-color 0.4s ease;
@@ -773,12 +776,18 @@
     #curator-feed-gallery1 .crt-panel-prev:hover,
     #curator-feed-gallery1 .crt-panel-prev:focus,
     #curator-feed-gallery1 .crt-panel-next:hover,
-    #curator-feed-gallery1 .crt-panel-next:focus {
+    #curator-feed-gallery1 .crt-panel-next:focus,
+    #curator-feed-default-feed-layout .crt-panel-prev:hover,
+    #curator-feed-default-feed-layout .crt-panel-prev:focus,
+    #curator-feed-default-feed-layout .crt-panel-next:hover,
+    #curator-feed-default-feed-layout .crt-panel-next:focus {
       background-color: var(--olive);
       border-color: var(--olive-bright);
     }
     #curator-feed-gallery1 .crt-panel-prev svg,
-    #curator-feed-gallery1 .crt-panel-next svg {
+    #curator-feed-gallery1 .crt-panel-next svg,
+    #curator-feed-default-feed-layout .crt-panel-prev svg,
+    #curator-feed-default-feed-layout .crt-panel-next svg {
       color: var(--cream);
     }
 
