@@ -1890,6 +1890,39 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>emailjs.init('8EumqL1Zlv51YPl9p');</script>
 
+  <!-- Keep the flash carousel parked on the newest posts.
+       Curator's published config sets widget.autoPlay = true (advances every 5s), so by
+       the time a visitor scrolls down to the gallery it has already rotated away from the
+       newest pieces. We intercept Curator.loadWidget and turn autoPlay off for carousel
+       widgets only; visitors still use the arrows / swipe. Curator itself parks the slider
+       on the newest page, so no positioning override is needed.
+       To restore autoplay, delete this block (the dashboard setting takes over again). -->
+  <script>
+  (function () {
+    var stored;
+    function patch(C) {
+      if (!C || C.__lizAutoplayPatched || typeof C.loadWidget !== 'function') return C;
+      var original = C.loadWidget;
+      C.loadWidget = function (config) {
+        try {
+          var w = config && config.widget;
+          if (w && /carousel/i.test(w.template || '')) w.autoPlay = false;
+        } catch (e) {}
+        return original.apply(this, arguments);
+      };
+      C.__lizAutoplayPatched = true;
+      return C;
+    }
+    try {
+      Object.defineProperty(window, 'Curator', {
+        configurable: true,
+        get: function () { return stored; },
+        set: function (value) { stored = patch(value); }
+      });
+    } catch (e) {}
+  })();
+  </script>
+
   <!-- Curator.io feeds -->
   <script type="text/javascript">
   /* curator-feed-gallery1 */
