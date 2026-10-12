@@ -1822,10 +1822,15 @@
                   Returning Client
                 </label>
               </div>
-              <!-- Flash piece / idea -->
+              <!-- Tattoo description -->
               <div class="form-group">
-                <label for="piece">Flash Piece / Idea</label>
-                <textarea id="piece" name="piece" rows="2" placeholder="Describe the flash piece you're interested in, or your custom idea..."></textarea>
+                <label for="piece">Tattoo Description</label>
+                <textarea id="piece" name="piece" rows="2" placeholder="Describe the tattoo you want — a flash piece or your custom idea..."></textarea>
+              </div>
+              <!-- Budget -->
+              <div class="form-group">
+                <label for="budget">Budget <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="budget" name="budget" placeholder="e.g. $150&ndash;$300" required aria-required="true">
               </div>
               <!-- Reference image upload -->
               <div class="form-group">
@@ -2184,6 +2189,7 @@
       const contactPref = email ? 'email' : (phone ? 'phone' : '');
       const returningClient = document.getElementById('returningClient').checked;
       const piece = document.getElementById('piece').value.trim();
+      const budget = document.getElementById('budget').value.trim();
       const placement = document.getElementById('placement').value.trim();
       const message = document.getElementById('message').value.trim();
       const fileInput = document.getElementById('refImage');
@@ -2196,6 +2202,10 @@
       }
       if (!email && !phone) {
         alert('Please enter an email address or a phone number so Liz can reach you.');
+        return;
+      }
+      if (!budget) {
+        alert('Please enter your budget for this tattoo.');
         return;
       }
 
@@ -2246,6 +2256,7 @@
             contact_preference: contactPref,
             returning_client: returningClient,
             piece: piece || null,
+            budget: budget,
             placement: placement || null,
             message: message || null,
             reference_image_url: imageUrl
@@ -2267,8 +2278,9 @@
           contact_pref: contactPref === 'email' ? 'Email' : 'Text',
           returning_client: returningClient ? 'Yes' : 'No',
           piece: piece || 'Not specified',
+          budget: budget,
           placement: placement || 'Not specified',
-          message: message || 'No additional details',
+          message: 'Budget: ' + budget + (message ? '\n' + message : ''),
           reference_image: imageUrl || 'No image uploaded'
         });
 
